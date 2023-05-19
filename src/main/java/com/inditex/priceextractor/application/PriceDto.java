@@ -1,7 +1,9 @@
 package com.inditex.priceextractor.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.inditex.priceextractor.domain.Price;
+
+import com.inditex.priceextractor.domain.PriceAggregate;
+
 import jakarta.validation.constraints.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -15,15 +17,16 @@ public record PriceDto(
         @NotNull@JsonProperty("end_date") String endDate,
         @JsonProperty("price") double price
 ) {
-    public static PriceDto fromPrice(SimpleDateFormat simpleDateFormat, Price price) {
+
+    public static PriceDto fromPrice(SimpleDateFormat simpleDateFormat, PriceAggregate priceAggregate) {
 
         return new PriceDto(
-                price.getId(),
-                price.getProductId(),
-                price.getBrandId(),
-                simpleDateFormat.format(price.getStartDate()),
-                simpleDateFormat.format(price.getEndDate()),
-                price.getPrice()
+            priceAggregate.getId(),
+            priceAggregate.getProductId(),
+            priceAggregate.getBrandId(),
+            simpleDateFormat.format(priceAggregate.getStartDate()),
+            simpleDateFormat.format(priceAggregate.getEndDate()),
+            priceAggregate.getPrice()
         );
     }
 

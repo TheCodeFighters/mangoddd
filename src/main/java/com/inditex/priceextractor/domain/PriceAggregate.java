@@ -4,7 +4,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.Objects;
 
-public class Price {
+public class PriceAggregate {
 
   private Long id;
 
@@ -22,7 +22,7 @@ public class Price {
 
   private Currency curr;
 
-  public Price(
+  public PriceAggregate(
       long id,
       long brandId,
       Date startDate,
@@ -89,10 +89,12 @@ public class Price {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Price price1 = (Price) o;
-    return id == price1.id && brandId == price1.brandId && productId == price1.productId && priority == price1.priority
-        && Double.compare(price1.price, price) == 0 && startDate.equals(price1.startDate) && endDate.equals(price1.endDate)
-        && curr.equals(price1.curr);
+    PriceAggregate priceAggregate1 = (PriceAggregate) o;
+    return id == priceAggregate1.id && brandId == priceAggregate1.brandId && productId == priceAggregate1.productId
+        && priority == priceAggregate1.priority
+        && Double.compare(priceAggregate1.price, price) == 0 && startDate.equals(priceAggregate1.startDate) && endDate.equals(
+        priceAggregate1.endDate)
+        && curr.equals(priceAggregate1.curr);
   }
 
   @Override

@@ -31,7 +31,7 @@ para validar el controller de la API usando el juego de pruebas, el coverage es 
 ### Request de ejemplo a la aplicación
 - request de ejemplo:
 ```shell
-curl --location --request GET 'http://localhost:8080/price?application_date=2020-06-14-10.00.00&product_id=35455&brand_id=1'
+curl --location --request GET 'http://localhost:8080/priceAggregate?application_date=2020-06-14-10.00.00&product_id=35455&brand_id=1'
 ```
 
 ### Documentacion de la api autogenerada con springdoc-openapi-starter-webmvc-ui

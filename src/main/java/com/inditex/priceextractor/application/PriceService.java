@@ -5,11 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import com.inditex.priceextractor.domain.Price;
+import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +28,7 @@ public class PriceService {
   public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) throws ParseException, RuntimeException {
 
     Date applicationDate = this.simpleDateFormat.parse(request.applicationDate());
-    Optional<Price> priceOpt = this.priceRepository.findRate(
+    Optional<PriceAggregate> priceOpt = this.priceRepository.findRate(
         request.productId(),
         request.brandId(),
         applicationDate

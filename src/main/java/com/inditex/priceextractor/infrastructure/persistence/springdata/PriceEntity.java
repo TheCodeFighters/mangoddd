@@ -3,7 +3,7 @@ package com.inditex.priceextractor.infrastructure.persistence.springdata;
 import java.util.Currency;
 import java.util.Date;
 
-import com.inditex.priceextractor.domain.Price;
+import com.inditex.priceextractor.domain.PriceAggregate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,8 +50,8 @@ public class PriceEntity {
   @NotNull
   private Currency curr;
 
-  public Price toPrice() {
-    return new Price(
+  public PriceAggregate toPrice() {
+    return new PriceAggregate(
         id,
         brandId,
         startDate,

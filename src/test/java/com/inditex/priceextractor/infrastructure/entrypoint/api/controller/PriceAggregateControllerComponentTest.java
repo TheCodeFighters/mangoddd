@@ -1,44 +1,40 @@
 package com.inditex.priceextractor.infrastructure.entrypoint.api.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.stream.Stream;
+
 import com.inditex.priceextractor.PriceExtractorApplication;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.text.SimpleDateFormat;
-import java.util.stream.Stream;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@RunWith(SpringRunner.class)
 @SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = PriceExtractorApplication.class)
+    webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+    classes = PriceExtractorApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class PriceControllerComponentTest {
+public class PriceAggregateControllerComponentTest {
 
-    @Autowired
-    MockMvc mvc;
+  @Autowired
+  MockMvc mvc;
 
-    @ParameterizedTest
-    @MethodSource("provideGivenDataSet")
-    public void givenValidRequest_whenGetCurrentPrice_thenStatus200AndValidResponse(
-            String givenApplicationDateAsStr,
-            long givenProductId,
-            long givenBrandId,
+  @ParameterizedTest
+  @MethodSource("provideGivenDataSet")
+  public void givenValidRequest_whenGetCurrentPrice_thenStatus200AndValidResponse(
+      String givenApplicationDateAsStr,
+      long givenProductId,
+      long givenBrandId,
             long expectedPriceList,
             String expectedStartDateAsStr,
             String expectedEndDateAsStr,

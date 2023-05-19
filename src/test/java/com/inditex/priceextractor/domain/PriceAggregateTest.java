@@ -12,7 +12,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PriceTest {
+public class PriceAggregateTest {
 
     SimpleDateFormat simpleDateFormat;
 
@@ -32,25 +32,25 @@ public class PriceTest {
         Double givenPrice = 35.40;
         Currency givenCurrency = Currency.getInstance("EUR");
 
-        Price price = new Price(
-                givenPriceId,
-                givenBrandId,
-                givenStartDate,
-                givenEndDate,
-                givenProductId,
-                givenPriority,
-                givenPrice,
-                givenCurrency
+        PriceAggregate priceAggregate = new PriceAggregate(
+            givenPriceId,
+            givenBrandId,
+            givenStartDate,
+            givenEndDate,
+            givenProductId,
+            givenPriority,
+            givenPrice,
+            givenCurrency
         );
 
-        Assertions.assertEquals(price.getId(), givenPriceId);
-        Assertions.assertEquals(price.getBrandId(), givenBrandId);
-        Assertions.assertEquals(price.getStartDate(), givenStartDate);
-        Assertions.assertEquals(price.getEndDate(), givenEndDate);
-        Assertions.assertEquals(price.getProductId(), givenProductId);
-        Assertions.assertEquals(price.getPriority(), givenPriority);
-        Assertions.assertEquals(price.getPrice(), givenPrice);
-        Assertions.assertEquals(price.getCurr(), givenCurrency);
+        Assertions.assertEquals(priceAggregate.getId(), givenPriceId);
+        Assertions.assertEquals(priceAggregate.getBrandId(), givenBrandId);
+        Assertions.assertEquals(priceAggregate.getStartDate(), givenStartDate);
+        Assertions.assertEquals(priceAggregate.getEndDate(), givenEndDate);
+        Assertions.assertEquals(priceAggregate.getProductId(), givenProductId);
+        Assertions.assertEquals(priceAggregate.getPriority(), givenPriority);
+        Assertions.assertEquals(priceAggregate.getPrice(), givenPrice);
+        Assertions.assertEquals(priceAggregate.getCurr(), givenCurrency);
 
     }
 
@@ -59,16 +59,16 @@ public class PriceTest {
 
         assertThrows(
                 RuntimeException.class,
-                () -> new Price(
-                        1,
-                        2,
-                        this.simpleDateFormat.parse("2020-06-14-00.00.00"),
-                        this.simpleDateFormat.parse("2020-06-13-00.00.00"),
-                        35455,
-                        0,
-                        35.40,
-                        Currency.getInstance("EUR")
-                )
+            () -> new PriceAggregate(
+                1,
+                2,
+                this.simpleDateFormat.parse("2020-06-14-00.00.00"),
+                this.simpleDateFormat.parse("2020-06-13-00.00.00"),
+                35455,
+                0,
+                35.40,
+                Currency.getInstance("EUR")
+            )
         );
     }
 }

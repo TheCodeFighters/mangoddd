@@ -1,6 +1,6 @@
 package com.inditex.priceextractor.application;
 
-import com.inditex.priceextractor.domain.Price;
+import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -19,12 +19,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class PriceServiceUnitTest {
+public class PriceAggregateServiceUnitTest {
+
     AutoCloseable openMocks;
+
     @Mock
     PriceRepository priceRepositoryMock;
 
     SimpleDateFormat simpleDateFormat;
+
     PriceService priceService;
 
     @BeforeEach
@@ -47,17 +50,17 @@ public class PriceServiceUnitTest {
                 1
         );
 
-        Price expectedPrice = this.creteExpectedPrice(givenRequest);
+        PriceAggregate expectedPriceAggregate = this.creteExpectedPrice(givenRequest);
 
         Date givenApplicationDate = this.simpleDateFormat.parse(givenRequest.applicationDate());
 
         when(
-                this.priceRepositoryMock.findRate(
-                        givenRequest.productId(),
-                        givenRequest.brandId(),
-                        givenApplicationDate
-                )
-        ).thenReturn(Optional.of(expectedPrice));
+            this.priceRepositoryMock.findRate(
+                givenRequest.productId(),
+                givenRequest.brandId(),
+                givenApplicationDate
+            )
+        ).thenReturn(Optional.of(expectedPriceAggregate));
 
         PriceDto priceResponseDto = this.priceService.getCurrentPrice(givenRequest);
 
@@ -65,25 +68,25 @@ public class PriceServiceUnitTest {
                 this.priceRepositoryMock,
                 times(1)
         ).findRate(
-                givenRequest.productId(),
-                givenRequest.brandId(),
-                givenApplicationDate
+            givenRequest.productId(),
+            givenRequest.brandId(),
+            givenApplicationDate
         );
 
-        Assertions.assertEquals(PriceDto.fromPrice(this.simpleDateFormat, expectedPrice), priceResponseDto);
+        Assertions.assertEquals(PriceDto.fromPrice(this.simpleDateFormat, expectedPriceAggregate), priceResponseDto);
 
     }
 
-    private Price creteExpectedPrice(GetCurrentPriceRequestDto givenRequest) throws ParseException {
-        return new Price(
-                1,
-                givenRequest.brandId(),
-                this.simpleDateFormat.parse("2020-06-14-00.00.00"),
-                this.simpleDateFormat.parse("2020-12-31-23.59.59"),
-                35455,
-                0,
-                34.50,
-                Currency.getInstance("EUR")
+    private PriceAggregate creteExpectedPrice(GetCurrentPriceRequestDto givenRequest) throws ParseException {
+        return new PriceAggregate(
+            1,
+            givenRequest.brandId(),
+            this.simpleDateFormat.parse("2020-06-14-00.00.00"),
+            this.simpleDateFormat.parse("2020-12-31-23.59.59"),
+            35455,
+            0,
+            34.50,
+            Currency.getInstance("EUR")
         );
     }
 

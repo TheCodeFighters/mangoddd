@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.inditex.priceextractor.domain.Price;
+import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,7 +24,7 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
     this.sdf = sdf;
   }
 
-  public Optional<Price> findRate(
+  public Optional<PriceAggregate> findRate(
       long productId,
       long brandId,
       @NonNull Date date
@@ -48,7 +48,7 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
       double resultPrice = resultSet.getDouble("price");
       String resultCurr = resultSet.getString("curr");
 
-      return new Price(
+      return new PriceAggregate(
           resultId,
           resultBrandId,
           resultStartDate,
