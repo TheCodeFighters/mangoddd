@@ -20,7 +20,7 @@ public class PriceService {
   private final SimpleDateFormat simpleDateFormat;
 
   public PriceService(
-      @Qualifier("JDCTemplate") PriceRepository priceRepository,
+      PriceRepository priceRepository,
       SimpleDateFormat simpleDateFormat
   ) {
     this.priceRepository = priceRepository;

@@ -4,26 +4,22 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.inditex.priceextractor.domain.Price;
 import com.inditex.priceextractor.domain.PriceRepository;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
-@Component("JDCTemplate")
 public class PriceEntityJdbcTemplate implements PriceRepository {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 
   private final SimpleDateFormat sdf;
 
-  public PriceEntityJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate, @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf) {
+  public PriceEntityJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate, SimpleDateFormat sdf) {
     this.jdbcTemplate = jdbcTemplate;
     this.sdf = sdf;
   }
