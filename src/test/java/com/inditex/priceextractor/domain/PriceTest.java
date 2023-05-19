@@ -23,13 +23,13 @@ public class PriceTest {
 
     @Test
     public void givenValidData_thenShouldWork() throws ParseException {
-        long givenPriceId = 1;
-        long givenBrandId= 2;
+        Long givenPriceId = 1L;
+        Long givenBrandId= 2L;
         Date givenStartDate = this.simpleDateFormat.parse("2020-06-14-00.00.00");
         Date givenEndDate = this.simpleDateFormat.parse("2020-12-31-23.59.59");
-        long givenProductId = 35455;
-        int givenPriority = 0;
-        double givenPrice = 35.40;
+        Long givenProductId = 35455L;
+        Integer givenPriority = 0;
+        Double givenPrice = 35.40;
         Currency givenCurrency = Currency.getInstance("EUR");
 
         Price price = new Price(

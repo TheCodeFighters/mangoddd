@@ -1,27 +1,24 @@
 package com.inditex.priceextractor.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
 import java.util.Currency;
 import java.util.Date;
 import java.util.Objects;
 
 public class Price {
 
-  private long id;
+  private Long id;
 
-  private long brandId;
+  private Long brandId;
 
   private Date startDate;
 
   private Date endDate;
 
-  private long productId;
+  private Long productId;
 
-  private int priority;
+  private Integer priority;
 
-  private double price;
+  private Double price;
 
   private Currency curr;
 

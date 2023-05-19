@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("SpringData")
 public class PriceSpringDataRepository implements com.inditex.priceextractor.domain.PriceRepository {
 
   private final PriceEntitySpringDataRepository priceEntitySpringDataRepository;

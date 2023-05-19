@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: apiumdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - priceextractor-mariadb:/var/lib/mysql
+
+volumes:
+  priceextractor-mariadb:

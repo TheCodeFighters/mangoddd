@@ -9,6 +9,7 @@ import com.inditex.priceextractor.domain.Price;
 import com.inditex.priceextractor.domain.PriceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,7 @@ public class PriceService {
     private final SimpleDateFormat simpleDateFormat;
 
     public PriceService(
-            @Autowired PriceRepository priceRepository,
+            @Qualifier("SpringData") PriceRepository priceRepository,
             @Autowired SimpleDateFormat simpleDateFormat
             ) {
         this.priceRepository = priceRepository;
