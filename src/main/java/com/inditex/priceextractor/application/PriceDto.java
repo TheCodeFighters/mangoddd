@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.text.SimpleDateFormat;
 
-
 public record PriceDto(
         @JsonProperty("price_list") long priceId,
         @JsonProperty("product_id") long productId,
@@ -19,14 +18,13 @@ public record PriceDto(
 ) {
 
     public static PriceDto fromPrice(SimpleDateFormat simpleDateFormat, PriceAggregate priceAggregate) {
-
         return new PriceDto(
             priceAggregate.getId(),
             priceAggregate.getProductId(),
             priceAggregate.getBrandId(),
             simpleDateFormat.format(priceAggregate.getStartDate()),
             simpleDateFormat.format(priceAggregate.getEndDate()),
-            priceAggregate.getMonetaryAmount().getNumber().doubleValue()
+            priceAggregate.getPositiveMonetaryAmount().value().getNumber().doubleValue()
         );
     }
 

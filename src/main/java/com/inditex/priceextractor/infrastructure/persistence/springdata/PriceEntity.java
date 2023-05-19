@@ -3,6 +3,7 @@ package com.inditex.priceextractor.infrastructure.persistence.springdata;
 import java.util.Currency;
 import java.util.Date;
 
+import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.Priority;
 
@@ -60,7 +61,7 @@ public class PriceEntity {
         endDate,
         productId,
         new Priority(priority),
-        Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create()
+        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create())
     );
   }
 

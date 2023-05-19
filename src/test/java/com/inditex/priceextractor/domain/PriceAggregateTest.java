@@ -32,7 +32,8 @@ public class PriceAggregateTest {
     Date givenEndDate = simpleDateFormat.parse("2020-12-31-23.59.59");
     Long givenProductId = 35455L;
     Priority givenPriority = new Priority(0);
-    MonetaryAmount givenMonetaryAmount = Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create();
+    PositiveMonetaryAmount givenpositiveMonetaryAmount =
+        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create());
 
     PriceAggregate priceAggregate = new PriceAggregate(
         givenPriceId,
@@ -41,7 +42,7 @@ public class PriceAggregateTest {
         givenEndDate,
         givenProductId,
         givenPriority,
-        givenMonetaryAmount
+        givenpositiveMonetaryAmount
     );
 
     Assertions.assertEquals(givenPriceId, priceAggregate.getId());
@@ -50,7 +51,7 @@ public class PriceAggregateTest {
     Assertions.assertEquals(givenEndDate, priceAggregate.getEndDate());
     Assertions.assertEquals(givenProductId, priceAggregate.getProductId());
     Assertions.assertEquals(givenPriority, priceAggregate.getPriority());
-    Assertions.assertEquals(givenMonetaryAmount, priceAggregate.getMonetaryAmount());
+    Assertions.assertEquals(givenpositiveMonetaryAmount, priceAggregate.getPositiveMonetaryAmount());
   }
 
   @Test
@@ -65,7 +66,7 @@ public class PriceAggregateTest {
             simpleDateFormat.parse("2020-06-13-00.00.00"),
             35455L,
             new Priority(0),
-            Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create()
+            new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create())
         )
     );
   }
@@ -84,7 +85,7 @@ public class PriceAggregateTest {
             simpleDateFormat.parse("2020-12-31-23.59.59"),
             35455L,
             new Priority(10),
-            Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(150.40).create()
+            new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(150.40).create())
         )
     );
   }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
@@ -56,7 +57,7 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
           resultEndDate,
           resultProductId,
           new Priority(resultPriority),
-          Monetary.getDefaultAmountFactory().setCurrency(resultCurr).setNumber(resultPrice).create()
+          new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(resultCurr).setNumber(resultPrice).create())
       );
     }).stream().findFirst();
   }

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
@@ -89,7 +90,7 @@ public class PriceServiceUnitTest {
         simpleDateFormat.parse("2020-12-31-23.59.59"),
         35455L,
         new Priority(0),
-        Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(34.50).create()
+        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(34.50).create())
     );
   }
 

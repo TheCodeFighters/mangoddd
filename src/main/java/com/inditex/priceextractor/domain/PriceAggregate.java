@@ -3,8 +3,6 @@ package com.inditex.priceextractor.domain;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.money.MonetaryAmount;
-
 public class PriceAggregate {
 
   private Long id;
@@ -19,7 +17,7 @@ public class PriceAggregate {
 
   private Priority priority;
 
-  private MonetaryAmount monetaryAmount;
+  private PositiveMonetaryAmount positiveMonetaryAmount;
 
   public PriceAggregate(
       Long id,
@@ -28,17 +26,17 @@ public class PriceAggregate {
       Date endDate,
       Long productId,
       Priority priority,
-      MonetaryAmount monetaryAmount
+      PositiveMonetaryAmount positiveMonetaryAmount
   ) {
     this.assertDateRangeIsValid(startDate, endDate);
-    this.assertPriceGreaterThan2Digits(priority, monetaryAmount);
+    this.assertPriceGreaterThan2Digits(priority, positiveMonetaryAmount);
     this.id = id;
     this.brandId = brandId;
     this.startDate = startDate;
     this.endDate = endDate;
     this.productId = productId;
     this.priority = priority;
-    this.monetaryAmount = monetaryAmount;
+    this.positiveMonetaryAmount = positiveMonetaryAmount;
   }
 
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
@@ -47,8 +45,8 @@ public class PriceAggregate {
     }
   }
 
-  private void assertPriceGreaterThan2Digits(Priority priority, MonetaryAmount monetaryAmount) {
-    Long amount = monetaryAmount.getNumber().numberValue(Long.class);
+  private void assertPriceGreaterThan2Digits(Priority priority, PositiveMonetaryAmount positiveMonetaryAmount) {
+    Long amount = positiveMonetaryAmount.value().getNumber().numberValue(Long.class);
     if (countDigits(amount) > 2 && priority.getValue() <= 10) {
       throw new InvalidPriceWithPriorityException("DomainError: price is greater than 999.99 and priority is less than 10");
     }
@@ -83,8 +81,8 @@ public class PriceAggregate {
     return priority;
   }
 
-  public MonetaryAmount getMonetaryAmount() {
-    return monetaryAmount;
+  public PositiveMonetaryAmount getPositiveMonetaryAmount() {
+    return positiveMonetaryAmount;
   }
 
   @Override
@@ -98,11 +96,11 @@ public class PriceAggregate {
     PriceAggregate that = (PriceAggregate) o;
     return Objects.equals(id, that.id) && Objects.equals(brandId, that.brandId) && Objects.equals(startDate,
         that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(productId, that.productId)
-        && Objects.equals(priority, that.priority) && Objects.equals(monetaryAmount, that.monetaryAmount);
+        && Objects.equals(priority, that.priority) && Objects.equals(positiveMonetaryAmount, that.positiveMonetaryAmount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, brandId, startDate, endDate, productId, priority, monetaryAmount);
+    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount);
   }
 }
