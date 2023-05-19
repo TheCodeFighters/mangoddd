@@ -52,10 +52,9 @@ public class PriceServiceUnitTest {
         Date givenApplicationDate = this.simpleDateFormat.parse(givenRequest.applicationDate());
 
         when(
-                this.priceRepositoryMock.findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+                this.priceRepositoryMock.findRate(
                         givenRequest.productId(),
                         givenRequest.brandId(),
-                        givenApplicationDate,
                         givenApplicationDate
                 )
         ).thenReturn(Optional.of(expectedPrice));
@@ -65,10 +64,9 @@ public class PriceServiceUnitTest {
         verify(
                 this.priceRepositoryMock,
                 times(1)
-        ).findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+        ).findRate(
                 givenRequest.productId(),
                 givenRequest.brandId(),
-                givenApplicationDate,
                 givenApplicationDate
         );
 
@@ -100,10 +98,9 @@ public class PriceServiceUnitTest {
         Date givenApplicationDate = this.simpleDateFormat.parse(givenRequest.applicationDate());
 
         when(
-                this.priceRepositoryMock.findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+                this.priceRepositoryMock.findRate(
                         givenRequest.productId(),
                         givenRequest.brandId(),
-                        givenApplicationDate,
                         givenApplicationDate
                 )
         ).thenReturn(Optional.empty());
@@ -116,10 +113,9 @@ public class PriceServiceUnitTest {
         verify(
                 this.priceRepositoryMock,
                 times(1)
-        ).findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+        ).findRate(
                 givenRequest.productId(),
                 givenRequest.brandId(),
-                givenApplicationDate,
                 givenApplicationDate
         );
 

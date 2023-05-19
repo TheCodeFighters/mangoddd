@@ -1,14 +1,15 @@
 package com.inditex.priceextractor.application;
 
-import com.inditex.priceextractor.domain.Price;
-import com.inditex.priceextractor.domain.PriceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+
+import com.inditex.priceextractor.domain.Price;
+import com.inditex.priceextractor.domain.PriceRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PriceService {
@@ -27,10 +28,9 @@ public class PriceService {
     public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) throws ParseException,RuntimeException {
 
         Date applicationDate =  this.simpleDateFormat.parse(request.applicationDate());
-        Optional<Price> priceOpt = this.priceRepository.findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
+        Optional<Price> priceOpt = this.priceRepository.findRate(
                 request.productId(),
                 request.brandId(),
-                applicationDate,
                 applicationDate
         );
         if(priceOpt.isPresent()){
