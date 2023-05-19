@@ -31,13 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PriceControllerComponentTest {
 
     @Autowired
-    WebApplicationContext webApplicationContext;
-
-    @Autowired
     MockMvc mvc;
-
-    @Autowired
-    SimpleDateFormat simpleDateFormat;
 
     @ParameterizedTest
     @MethodSource("provideGivenDataSet")

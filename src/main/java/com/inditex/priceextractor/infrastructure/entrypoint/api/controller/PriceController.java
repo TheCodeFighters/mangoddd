@@ -18,7 +18,7 @@ public class PriceController {
 
     private final PriceService priceService;
 
-    public PriceController(@Autowired PriceService $priceService) {
+    public PriceController(PriceService $priceService) {
         this.priceService = $priceService;
     }
 

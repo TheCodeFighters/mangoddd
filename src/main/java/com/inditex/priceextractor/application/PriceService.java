@@ -15,29 +15,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceService {
 
-    private final PriceRepository priceRepository;
-    private final SimpleDateFormat simpleDateFormat;
+  private final PriceRepository priceRepository;
 
-    public PriceService(
-            @Qualifier("SpringData") PriceRepository priceRepository,
-            @Autowired SimpleDateFormat simpleDateFormat
-            ) {
-        this.priceRepository = priceRepository;
-        this.simpleDateFormat = simpleDateFormat;
+  private final SimpleDateFormat simpleDateFormat;
+
+  public PriceService(
+      @Qualifier("JDCTemplate") PriceRepository priceRepository,
+      SimpleDateFormat simpleDateFormat
+  ) {
+    this.priceRepository = priceRepository;
+    this.simpleDateFormat = simpleDateFormat;
+  }
+
+  public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) throws ParseException, RuntimeException {
+
+    Date applicationDate = this.simpleDateFormat.parse(request.applicationDate());
+    Optional<Price> priceOpt = this.priceRepository.findRate(
+        request.productId(),
+        request.brandId(),
+        applicationDate
+    );
+    if (priceOpt.isPresent()) {
+      return PriceDto.fromPrice(this.simpleDateFormat, priceOpt.get());
+    } else {
+      throw new RuntimeException();
     }
-
-    public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) throws ParseException,RuntimeException {
-
-        Date applicationDate =  this.simpleDateFormat.parse(request.applicationDate());
-        Optional<Price> priceOpt = this.priceRepository.findRate(
-                request.productId(),
-                request.brandId(),
-                applicationDate
-        );
-        if(priceOpt.isPresent()){
-            return PriceDto.fromPrice(this.simpleDateFormat,priceOpt.get());
-        }else{
-            throw new RuntimeException();
-        }
-    }
+  }
 }

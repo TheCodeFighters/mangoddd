@@ -15,7 +15,7 @@ public class PriceSpringDataRepository implements com.inditex.priceextractor.dom
 
   private final PriceEntitySpringDataRepository priceEntitySpringDataRepository;
 
-  public PriceSpringDataRepository(@Autowired PriceEntitySpringDataRepository priceEntitySpringDataRepository) {
+  public PriceSpringDataRepository(PriceEntitySpringDataRepository priceEntitySpringDataRepository) {
     this.priceEntitySpringDataRepository = priceEntitySpringDataRepository;
   }
 
