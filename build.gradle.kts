@@ -26,6 +26,7 @@ dependencies {
 	testImplementation("junit:junit:4.13.2")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.javamoney:moneta:1.4.2")
 }
 
 tasks.withType<Test> {

@@ -27,14 +27,14 @@ public class PriceService {
 
   public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) throws ParseException, RuntimeException {
 
-    Date applicationDate = this.simpleDateFormat.parse(request.applicationDate());
-    Optional<PriceAggregate> priceOpt = this.priceRepository.findRate(
+    Date applicationDate = simpleDateFormat.parse(request.applicationDate());
+    Optional<PriceAggregate> priceOpt = priceRepository.findRate(
         request.productId(),
         request.brandId(),
         applicationDate
     );
     if (priceOpt.isPresent()) {
-      return PriceDto.fromPrice(this.simpleDateFormat, priceOpt.get());
+      return PriceDto.fromPrice(simpleDateFormat, priceOpt.get());
     } else {
       throw new RuntimeException();
     }

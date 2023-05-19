@@ -1,7 +1,6 @@
 package com.inditex.priceextractor.infrastructure.persistence.jdbctemplate;
 
 import java.text.SimpleDateFormat;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +8,9 @@ import java.util.Optional;
 
 import com.inditex.priceextractor.domain.PriceAggregate;
 import com.inditex.priceextractor.domain.PriceRepository;
+import com.inditex.priceextractor.domain.Priority;
 
+import javax.money.Monetary;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.lang.NonNull;
 
@@ -54,9 +55,8 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
           resultStartDate,
           resultEndDate,
           resultProductId,
-          resultPriority,
-          resultPrice,
-          Currency.getInstance(resultCurr)
+          new Priority(resultPriority),
+          Monetary.getDefaultAmountFactory().setCurrency(resultCurr).setNumber(resultPrice).create()
       );
     }).stream().findFirst();
   }

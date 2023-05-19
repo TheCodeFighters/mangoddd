@@ -1,8 +1,9 @@
 package com.inditex.priceextractor.domain;
 
-import java.util.Currency;
 import java.util.Date;
 import java.util.Objects;
+
+import javax.money.MonetaryAmount;
 
 public class PriceAggregate {
 
@@ -16,37 +17,46 @@ public class PriceAggregate {
 
   private Long productId;
 
-  private Integer priority;
+  private Priority priority;
 
-  private Double price;
-
-  private Currency curr;
+  private MonetaryAmount monetaryAmount;
 
   public PriceAggregate(
-      long id,
-      long brandId,
+      Long id,
+      Long brandId,
       Date startDate,
       Date endDate,
-      long productId,
-      int priority,
-      double price,
-      Currency curr
+      Long productId,
+      Priority priority,
+      MonetaryAmount monetaryAmount
   ) {
-    this.id = id;
     this.assertDateRangeIsValid(startDate, endDate);
+    this.assertPriceGreaterThan2Digits(priority, monetaryAmount);
+    this.id = id;
     this.brandId = brandId;
     this.startDate = startDate;
     this.endDate = endDate;
     this.productId = productId;
     this.priority = priority;
-    this.price = price;
-    this.curr = curr;
+    this.monetaryAmount = monetaryAmount;
   }
 
-  private void assertDateRangeIsValid(Date startDate, Date endDate) throws RuntimeException {
+  private void assertDateRangeIsValid(Date startDate, Date endDate) {
     if (!startDate.before(endDate)) {
       throw new RuntimeException("DomainError: startDate can not bee newer than endDate");
     }
+  }
+
+  private void assertPriceGreaterThan2Digits(Priority priority, MonetaryAmount monetaryAmount) {
+    Long amount = monetaryAmount.getNumber().numberValue(Long.class);
+    if (countDigits(amount) > 2 && priority.getValue() <= 10) {
+      throw new InvalidPriceWithPriorityException("DomainError: price is greater than 999.99 and priority is less than 10");
+    }
+  }
+
+  private Integer countDigits(Long number) {
+    String numberString = Long.toString(number);
+    return numberString.length();
   }
 
   public long getBrandId() {
@@ -69,16 +79,12 @@ public class PriceAggregate {
     return productId;
   }
 
-  public int getPriority() {
+  public Priority getPriority() {
     return priority;
   }
 
-  public double getPrice() {
-    return price;
-  }
-
-  public Currency getCurr() {
-    return curr;
+  public MonetaryAmount getMonetaryAmount() {
+    return monetaryAmount;
   }
 
   @Override
@@ -89,16 +95,14 @@ public class PriceAggregate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PriceAggregate priceAggregate1 = (PriceAggregate) o;
-    return id == priceAggregate1.id && brandId == priceAggregate1.brandId && productId == priceAggregate1.productId
-        && priority == priceAggregate1.priority
-        && Double.compare(priceAggregate1.price, price) == 0 && startDate.equals(priceAggregate1.startDate) && endDate.equals(
-        priceAggregate1.endDate)
-        && curr.equals(priceAggregate1.curr);
+    PriceAggregate that = (PriceAggregate) o;
+    return Objects.equals(id, that.id) && Objects.equals(brandId, that.brandId) && Objects.equals(startDate,
+        that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(productId, that.productId)
+        && Objects.equals(priority, that.priority) && Objects.equals(monetaryAmount, that.monetaryAmount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, brandId, startDate, endDate, productId, priority, price, curr);
+    return Objects.hash(id, brandId, startDate, endDate, productId, priority, monetaryAmount);
   }
 }

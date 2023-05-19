@@ -26,7 +26,7 @@ public record PriceDto(
             priceAggregate.getBrandId(),
             simpleDateFormat.format(priceAggregate.getStartDate()),
             simpleDateFormat.format(priceAggregate.getEndDate()),
-            priceAggregate.getPrice()
+            priceAggregate.getMonetaryAmount().getNumber().doubleValue()
         );
     }
 

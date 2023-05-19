@@ -4,6 +4,7 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.inditex.priceextractor.domain.PriceAggregate;
+import com.inditex.priceextractor.domain.Priority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
+import javax.money.Monetary;
 
 @Entity
 @Table(name = "prices")
@@ -57,9 +59,8 @@ public class PriceEntity {
         startDate,
         endDate,
         productId,
-        priority,
-        price,
-        curr
+        new Priority(priority),
+        Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create()
     );
   }
 
