@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 
 public interface PriceRepository {
 
-  Optional<PriceAggregate> findRate(
+  Optional<PriceAgg> findRate(
       long productId,
       long brandId,
       @NonNull Date date

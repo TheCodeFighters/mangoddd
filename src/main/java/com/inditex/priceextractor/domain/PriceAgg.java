@@ -2,10 +2,11 @@ package com.inditex.priceextractor.domain;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
-public class PriceAggregate {
+public class PriceAgg {
 
-  private Long id;
+  private PriceId id;
 
   private Long brandId;
 
@@ -19,8 +20,8 @@ public class PriceAggregate {
 
   private PositiveMonetaryAmount positiveMonetaryAmount;
 
-  public PriceAggregate(
-      Long id,
+  public PriceAgg(
+      PriceId id,
       Long brandId,
       Date startDate,
       Date endDate,
@@ -57,6 +58,10 @@ public class PriceAggregate {
     return numberString.length();
   }
 
+  public PriceId getId() {
+    return id;
+  }
+
   public long getBrandId() {
     return brandId;
   }
@@ -69,8 +74,8 @@ public class PriceAggregate {
     return endDate;
   }
 
-  public long getId() {
-    return id;
+  public void setId(PriceId id) {
+    this.id = id;
   }
 
   public long getProductId() {
@@ -93,10 +98,11 @@ public class PriceAggregate {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PriceAggregate that = (PriceAggregate) o;
-    return Objects.equals(id, that.id) && Objects.equals(brandId, that.brandId) && Objects.equals(startDate,
-        that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(productId, that.productId)
-        && Objects.equals(priority, that.priority) && Objects.equals(positiveMonetaryAmount, that.positiveMonetaryAmount);
+    PriceAgg priceAgg = (PriceAgg) o;
+    return Objects.equals(id, priceAgg.id) && Objects.equals(brandId, priceAgg.brandId) && Objects.equals(
+        startDate, priceAgg.startDate) && Objects.equals(endDate, priceAgg.endDate) && Objects.equals(productId,
+        priceAgg.productId) && Objects.equals(priority, priceAgg.priority) && Objects.equals(positiveMonetaryAmount,
+        priceAgg.positiveMonetaryAmount);
   }
 
   @Override

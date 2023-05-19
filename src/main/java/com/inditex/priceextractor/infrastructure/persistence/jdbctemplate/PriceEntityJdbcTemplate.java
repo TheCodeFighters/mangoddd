@@ -1,13 +1,16 @@
 package com.inditex.priceextractor.infrastructure.persistence.jdbctemplate;
 
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
-import com.inditex.priceextractor.domain.PriceAggregate;
+import com.inditex.priceextractor.domain.PriceAgg;
+import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
 
@@ -26,7 +29,7 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
     this.sdf = sdf;
   }
 
-  public Optional<PriceAggregate> findRate(
+  public Optional<PriceAgg> findRate(
       long productId,
       long brandId,
       @NonNull Date date
@@ -41,16 +44,16 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
     params.put("applicationDate", sdf.format(date.getTime()));
 
     return jdbcTemplate.query(sql, params, (resultSet, rowNum) -> {
-      long resultId = resultSet.getLong("price_list");
-      long resultBrandId = resultSet.getLong("brand_id");
+      PriceId resultId = new PriceId(UUID.fromString(resultSet.getString("price_list")));
+      Long resultBrandId = resultSet.getLong("brand_id");
       Date resultStartDate = new Date(resultSet.getTimestamp("start_date").getTime());
       Date resultEndDate = new Date(resultSet.getTimestamp("end_date").getTime());
-      long resultProductId = resultSet.getLong("product_id");
-      int resultPriority = resultSet.getInt("priority");
-      double resultPrice = resultSet.getDouble("price");
+      Long resultProductId = resultSet.getLong("product_id");
+      Integer resultPriority = resultSet.getInt("priority");
+      Double resultPrice = resultSet.getDouble("price");
       String resultCurr = resultSet.getString("curr");
 
-      return new PriceAggregate(
+      return new PriceAgg(
           resultId,
           resultBrandId,
           resultStartDate,

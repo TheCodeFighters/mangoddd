@@ -2,9 +2,11 @@ package com.inditex.priceextractor.infrastructure.persistence.springdata;
 
 import java.util.Currency;
 import java.util.Date;
+import java.util.UUID;
 
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
-import com.inditex.priceextractor.domain.PriceAggregate;
+import com.inditex.priceextractor.domain.PriceAgg;
+import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.Priority;
 
 import jakarta.persistence.Column;
@@ -24,8 +26,7 @@ public class PriceEntity {
 
   @Id
   @Column(name = "price_list")
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private String id;
 
   @Column(name = "brand_id", nullable = false)
   private long brandId;
@@ -53,9 +54,9 @@ public class PriceEntity {
   @NotNull
   private Currency curr;
 
-  public PriceAggregate toPrice() {
-    return new PriceAggregate(
-        id,
+  public PriceAgg toPrice() {
+    return new PriceAgg(
+        new PriceId(UUID.fromString(id)),
         brandId,
         startDate,
         endDate,

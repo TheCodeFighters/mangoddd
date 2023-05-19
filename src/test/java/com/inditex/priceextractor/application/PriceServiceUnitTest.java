@@ -9,9 +9,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
-import com.inditex.priceextractor.domain.PriceAggregate;
+import com.inditex.priceextractor.domain.PriceAgg;
+import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
@@ -55,7 +57,7 @@ public class PriceServiceUnitTest {
         1
     );
 
-    PriceAggregate expectedPriceAggregate = creteExpectedPrice(givenRequest);
+    PriceAgg expectedPriceAggregate = creteExpectedPrice(givenRequest);
 
     Date givenApplicationDate = simpleDateFormat.parse(givenRequest.applicationDate());
 
@@ -82,9 +84,9 @@ public class PriceServiceUnitTest {
 
   }
 
-  private PriceAggregate creteExpectedPrice(GetCurrentPriceRequestDto givenRequest) throws ParseException {
-    return new PriceAggregate(
-        1L,
+  private PriceAgg creteExpectedPrice(GetCurrentPriceRequestDto givenRequest) throws ParseException {
+    return new PriceAgg(
+        new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
         givenRequest.brandId(),
         simpleDateFormat.parse("2020-06-14-00.00.00"),
         simpleDateFormat.parse("2020-12-31-23.59.59"),

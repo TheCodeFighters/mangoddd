@@ -5,17 +5,17 @@ import static org.junit.Assert.assertThrows;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 
 import javax.money.Monetary;
-import javax.money.MonetaryAmount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class PriceAggregateTest {
+public class PriceAggTest {
 
   private SimpleDateFormat simpleDateFormat;
 
@@ -26,7 +26,7 @@ public class PriceAggregateTest {
 
   @Test
   public void givenValidData_thenShouldWork() throws ParseException {
-    Long givenPriceId = 1L;
+    PriceId givenPriceId = new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"));
     Long givenBrandId = 2L;
     Date givenStartDate = simpleDateFormat.parse("2020-06-14-00.00.00");
     Date givenEndDate = simpleDateFormat.parse("2020-12-31-23.59.59");
@@ -35,7 +35,7 @@ public class PriceAggregateTest {
     PositiveMonetaryAmount givenpositiveMonetaryAmount =
         new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create());
 
-    PriceAggregate priceAggregate = new PriceAggregate(
+    PriceAgg priceAggregate = new PriceAgg(
         givenPriceId,
         givenBrandId,
         givenStartDate,
@@ -59,8 +59,8 @@ public class PriceAggregateTest {
 
     assertThrows(
         RuntimeException.class,
-        () -> new PriceAggregate(
-            1L,
+        () -> new PriceAgg(
+            new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
             2L,
             simpleDateFormat.parse("2020-06-14-00.00.00"),
             simpleDateFormat.parse("2020-06-13-00.00.00"),
@@ -78,8 +78,8 @@ public class PriceAggregateTest {
   public void test_3() {
 
     Assertions.assertThrows(InvalidPriceWithPriorityException.class,
-        () -> new PriceAggregate(
-            1L,
+        () -> new PriceAgg(
+            new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
             2L,
             simpleDateFormat.parse("2020-06-14-00.00.00"),
             simpleDateFormat.parse("2020-12-31-23.59.59"),
