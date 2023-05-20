@@ -25,9 +25,9 @@ public class PriceController {
     @GetMapping("/price")
     @ResponseBody
     public ResponseEntity<PriceDto> getPrice(
-            @RequestParam("application_date") String applicationDate,
-            @RequestParam("product_id") long productId,
-            @RequestParam("brand_id") long brandId
+        @RequestParam("application_date") String applicationDate,
+        @RequestParam("product_id") String productId,
+        @RequestParam("brand_id") String brandId
     ) {
 
         try {

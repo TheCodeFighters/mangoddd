@@ -8,8 +8,8 @@ import org.springframework.lang.NonNull;
 public interface PriceRepository {
 
   Optional<PriceAgg> findRate(
-      long productId,
-      long brandId,
+      @NonNull ProductId productId,
+      @NonNull BrandId brandId,
       @NonNull Date date
   );
 }

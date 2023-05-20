@@ -10,8 +10,8 @@ import java.text.SimpleDateFormat;
 
 public record PriceDto(
     @JsonProperty("price_list") String priceId,
-    @JsonProperty("product_id") Long productId,
-    @JsonProperty("brand_id") Long brandId,
+    @JsonProperty("product_id") String productId,
+    @JsonProperty("brand_id") String brandId,
     @NotNull @JsonProperty("start_date") String startDate,
     @NotNull @JsonProperty("end_date") String endDate,
     @JsonProperty("price") Double price
@@ -20,8 +20,8 @@ public record PriceDto(
   public static PriceDto fromPrice(SimpleDateFormat simpleDateFormat, PriceAgg priceAggregate) {
     return new PriceDto(
         priceAggregate.getId().toString(),
-        priceAggregate.getProductId(),
-        priceAggregate.getBrandId(),
+        priceAggregate.getProductId().id().toString(),
+        priceAggregate.getBrandId().id().toString(),
         simpleDateFormat.format(priceAggregate.getStartDate()),
         simpleDateFormat.format(priceAggregate.getEndDate()),
         priceAggregate.getPositiveMonetaryAmount().value().getNumber().doubleValue()

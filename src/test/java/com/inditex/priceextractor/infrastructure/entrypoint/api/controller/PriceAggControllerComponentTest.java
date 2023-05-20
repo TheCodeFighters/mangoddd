@@ -7,7 +7,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.inditex.priceextractor.PriceExtractorApplication;
+import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PriceId;
+import com.inditex.priceextractor.domain.ProductId;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,25 +30,30 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class PriceAggControllerComponentTest {
 
+  public static final ProductId GIVEN_PRODUCT_ID = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
+
+  public static final BrandId GIVEN_BRAND_ID = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
+
   @Autowired
   MockMvc mvc;
 
   @ParameterizedTest
   @MethodSource("provideGivenDataSet")
-  public void givenValidRequest_whenGetCurrentPrice_thenStatus200AndValidResponse(String givenApplicationDateAsStr, long givenProductId,
-      long givenBrandId, PriceId expectedPriceList, String expectedStartDateAsStr, String expectedEndDateAsStr, double expectedPrice)
+  public void givenValidRequest_whenGetCurrentPrice_thenStatus200AndValidResponse(String givenApplicationDateAsStr,
+      ProductId givenProductId, BrandId givenBrandId, PriceId expectedPriceList, String expectedStartDateAsStr, String expectedEndDateAsStr,
+      double expectedPrice)
       throws Exception {
 
-    int expectedProductId = 35455;
-    int expectedBrandId = 1;
+    String expectedProductId = GIVEN_PRODUCT_ID.id().toString();
+    String expectedBrandId = GIVEN_BRAND_ID.id().toString();
 
     mvc.perform(
             get(
                 String.format(
-                    "/price?application_date=%s&product_id=%d&brand_id=%d",
+                    "/price?application_date=%s&product_id=%s&brand_id=%s",
                     givenApplicationDateAsStr,
-                    givenProductId,
-                    givenBrandId
+                    givenProductId.id().toString(),
+                    givenBrandId.id().toString()
                 )
             )
                 .contentType(MediaType.APPLICATION_JSON)
@@ -62,34 +69,41 @@ public class PriceAggControllerComponentTest {
 
   private static Stream<Arguments> provideGivenDataSet() {
     return Stream.of(
-        Arguments.of("2020-06-14-10.00.00", 35455, 1, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
-            "2020-06-14-00.00.00", "2020-12-31-23.59.59", 35.50),
-        Arguments.of("2020-06-14-16.00.00", 35455, 1, new PriceId(UUID.fromString("2fe9b9de-1808-4b31-8dd2-34a98825003f")),
-            "2020-06-14-15.00.00", "2020-06-14-18.30.00", 25.45),
-        Arguments.of("2020-06-14-21.00.00", 35455, 1, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
-            "2020-06-14-00.00.00", "2020-12-31-23.59.59", 35.50),
-        Arguments.of("2020-06-15-10.00.00", 35455, 1, new PriceId(UUID.fromString("9c277bf4-6c6d-4932-aebb-47deb49e8263")),
-            "2020-06-15-00.00.00", "2020-06-15-11.00.00", 30.50),
-        Arguments.of("2020-06-16-21.00.00", 35455, 1, new PriceId(UUID.fromString("4d6b4f1e-3310-4b40-b803-88f9b6d2c668")),
-            "2020-06-15-16.00.00", "2020-12-31-23.59.59", 38.95)
+        Arguments.of("2020-06-14-10.00.00", GIVEN_PRODUCT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")), "2020-06-14-00.00.00",
+            "2020-12-31-23.59.59",
+            35.50),
+        Arguments.of("2020-06-14-16.00.00", GIVEN_PRODUCT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("2fe9b9de-1808-4b31-8dd2-34a98825003f")), "2020-06-14-15.00.00",
+            "2020-06-14-18.30.00",
+            25.45),
+        Arguments.of("2020-06-14-21.00.00", GIVEN_PRODUCT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")), "2020-06-14-00.00.00",
+            "2020-12-31-23.59.59",
+            35.50),
+        Arguments.of("2020-06-15-10.00.00", GIVEN_PRODUCT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("9c277bf4-6c6d-4932-aebb-47deb49e8263")), "2020-06-15-00.00.00",
+            "2020-06-15-11.00.00",
+            30.50),
+        Arguments.of("2020-06-16-21.00.00", GIVEN_PRODUCT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("4d6b4f1e-3310-4b40-b803-88f9b6d2c668")), "2020-06-15-16.00.00",
+            "2020-12-31-23.59.59",
+            38.95)
     );
   }
 
   @Test
   public void givenRequestWithNotPriceAssociated_whenGetCurrentPrice_thenStatus204()
       throws Exception {
-
     String givenApplicationDateAsStr = "2020-06-14-10.00.00";
-    long givenProductId = 2556;
-    long givenBrandId = 1;
 
     mvc.perform(
             get(
                 String.format(
-                    "/price?application_date=%s&product_id=%d&brand_id=%d",
+                    "/price?application_date=%s&product_id=%s&brand_id=%s",
                     givenApplicationDateAsStr,
-                    givenProductId,
-                    givenBrandId
+                    GIVEN_PRODUCT_ID.id().toString(),
+                    "d4eb380b-c25b-44ae-a1a2-8074eb1dca2a"
                 )
             )
                 .contentType(MediaType.APPLICATION_JSON)
@@ -103,16 +117,14 @@ public class PriceAggControllerComponentTest {
       throws Exception {
 
     String givenApplicationDateAsStr = "cmt:2020-06-14-10.00.00";
-    long givenProductId = 2556;
-    long givenBrandId = 1;
 
     mvc.perform(
             get(
                 String.format(
-                    "/price?application_date=%s&product_id=%d&brand_id=%d",
+                    "/price?application_date=%s&product_id=%s&brand_id=%s",
                     givenApplicationDateAsStr,
-                    givenProductId,
-                    givenBrandId
+                    GIVEN_PRODUCT_ID.id().toString(),
+                    GIVEN_BRAND_ID.id().toString()
                 )
             )
                 .contentType(MediaType.APPLICATION_JSON)

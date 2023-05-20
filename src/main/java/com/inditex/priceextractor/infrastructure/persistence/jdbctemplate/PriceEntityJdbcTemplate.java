@@ -8,11 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
+import com.inditex.priceextractor.domain.ProductId;
 
 import javax.money.Monetary;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -30,8 +32,8 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
   }
 
   public Optional<PriceAgg> findRate(
-      long productId,
-      long brandId,
+      @NonNull ProductId productId,
+      @NonNull BrandId brandId,
       @NonNull Date date
   ) {
     String sql = "SELECT * FROM prices WHERE product_id = :productId AND brand_id = :brandId " +
@@ -39,16 +41,16 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
         "ORDER BY priority DESC LIMIT 1";
 
     Map<String, Object> params = new HashMap<>();
-    params.put("productId", productId);
-    params.put("brandId", brandId);
+    params.put("productId", productId.id().toString());
+    params.put("brandId", brandId.id().toString());
     params.put("applicationDate", sdf.format(date.getTime()));
 
     return jdbcTemplate.query(sql, params, (resultSet, rowNum) -> {
       PriceId resultId = new PriceId(UUID.fromString(resultSet.getString("price_list")));
-      Long resultBrandId = resultSet.getLong("brand_id");
+      BrandId resultBrandId = new BrandId(UUID.fromString(resultSet.getString("brand_id")));
       Date resultStartDate = new Date(resultSet.getTimestamp("start_date").getTime());
       Date resultEndDate = new Date(resultSet.getTimestamp("end_date").getTime());
-      Long resultProductId = resultSet.getLong("product_id");
+      ProductId resultProductId = new ProductId(UUID.fromString(resultSet.getString("product_id")));
       Integer resultPriority = resultSet.getInt("priority");
       Double resultPrice = resultSet.getDouble("price");
       String resultCurr = resultSet.getString("curr");

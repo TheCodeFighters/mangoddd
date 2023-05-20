@@ -4,9 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
+import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceRepository;
+import com.inditex.priceextractor.domain.ProductId;
 
 import org.springframework.stereotype.Service;
 
@@ -29,8 +32,8 @@ public class PriceService {
 
     Date applicationDate = simpleDateFormat.parse(request.applicationDate());
     Optional<PriceAgg> priceOpt = priceRepository.findRate(
-        request.productId(),
-        request.brandId(),
+        new ProductId(UUID.fromString(request.productId())),
+        new BrandId(UUID.fromString(request.brandId())),
         applicationDate
     );
     if (priceOpt.isPresent()) {

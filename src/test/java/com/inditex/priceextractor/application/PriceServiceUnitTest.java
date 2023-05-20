@@ -11,11 +11,13 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.Priority;
+import com.inditex.priceextractor.domain.ProductId;
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 
 import javax.money.Monetary;
@@ -27,6 +29,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class PriceServiceUnitTest {
+
+  public static final GetCurrentPriceRequestDto GIVEN_VALID_REQUEST = new GetCurrentPriceRequestDto(
+      "2020-06-14-10.00.00",
+      "8a6cf9ed-44cb-4962-8f1f-81e2748a4e7c",
+      "2594b409-fb76-4d12-bbaf-63391b39218d"
+  );
 
   AutoCloseable openMocks;
 
@@ -51,46 +59,43 @@ public class PriceServiceUnitTest {
 
   @Test
   public void givenValidRequest_thenValidPriceResponseDtoReturned() throws ParseException {
-    GetCurrentPriceRequestDto givenRequest = new GetCurrentPriceRequestDto(
-        "2020-06-14-10.00.00",
-        35455,
-        1
-    );
 
-    PriceAgg expectedPriceAggregate = creteExpectedPrice(givenRequest);
+    PriceAgg givenPriceAgg = cretePriceAgg(GIVEN_VALID_REQUEST);
 
-    Date givenApplicationDate = simpleDateFormat.parse(givenRequest.applicationDate());
+    Date givenApplicationDate = simpleDateFormat.parse(GIVEN_VALID_REQUEST.applicationDate());
+    ProductId givenProductId = new ProductId(UUID.fromString(GIVEN_VALID_REQUEST.productId()));
+    BrandId givenBrandId = new BrandId(UUID.fromString(GIVEN_VALID_REQUEST.brandId()));
 
     when(
         priceRepositoryMock.findRate(
-            givenRequest.productId(),
-            givenRequest.brandId(),
+            givenProductId,
+            givenBrandId,
             givenApplicationDate
         )
-    ).thenReturn(Optional.of(expectedPriceAggregate));
+    ).thenReturn(Optional.of(givenPriceAgg));
 
-    PriceDto priceResponseDto = priceService.getCurrentPrice(givenRequest);
+    PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(
         priceRepositoryMock,
         times(1)
     ).findRate(
-        givenRequest.productId(),
-        givenRequest.brandId(),
+        givenProductId,
+        givenBrandId,
         givenApplicationDate
     );
 
-    Assertions.assertEquals(PriceDto.fromPrice(simpleDateFormat, expectedPriceAggregate), priceResponseDto);
+    Assertions.assertEquals(PriceDto.fromPrice(simpleDateFormat, givenPriceAgg), priceResponseDto);
 
   }
 
-  private PriceAgg creteExpectedPrice(GetCurrentPriceRequestDto givenRequest) throws ParseException {
+  private PriceAgg cretePriceAgg(GetCurrentPriceRequestDto givenRequest) throws ParseException {
     return new PriceAgg(
         new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
-        givenRequest.brandId(),
+        new BrandId(UUID.fromString(givenRequest.brandId())),
         simpleDateFormat.parse("2020-06-14-00.00.00"),
         simpleDateFormat.parse("2020-12-31-23.59.59"),
-        35455L,
+        new ProductId(UUID.fromString(givenRequest.productId())),
         new Priority(0),
         new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(34.50).create())
     );
@@ -98,18 +103,16 @@ public class PriceServiceUnitTest {
 
   @Test()
   public void givenValidRequestWithNoPriceAssociated_thenRuntimeExceptionIsThrown() throws ParseException {
-    GetCurrentPriceRequestDto givenRequest = new GetCurrentPriceRequestDto(
-        "2028-06-14-10.00.00",
-        35455,
-        1
-    );
+    GetCurrentPriceRequestDto givenRequest = GIVEN_VALID_REQUEST;
 
-    Date givenApplicationDate = simpleDateFormat.parse(givenRequest.applicationDate());
+    Date givenApplicationDate = simpleDateFormat.parse(GIVEN_VALID_REQUEST.applicationDate());
+    ProductId givenProductId = new ProductId(UUID.fromString(GIVEN_VALID_REQUEST.productId()));
+    BrandId givenBrandId = new BrandId(UUID.fromString(GIVEN_VALID_REQUEST.brandId()));
 
     when(
         priceRepositoryMock.findRate(
-            givenRequest.productId(),
-            givenRequest.brandId(),
+            givenProductId,
+            givenBrandId,
             givenApplicationDate
         )
     ).thenReturn(Optional.empty());
@@ -123,8 +126,8 @@ public class PriceServiceUnitTest {
         priceRepositoryMock,
         times(1)
     ).findRate(
-        givenRequest.productId(),
-        givenRequest.brandId(),
+        givenProductId,
+        givenBrandId,
         givenApplicationDate
     );
 

@@ -27,10 +27,10 @@ public class PriceAggTest {
   @Test
   public void givenValidData_thenShouldWork() throws ParseException {
     PriceId givenPriceId = new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"));
-    Long givenBrandId = 2L;
+    BrandId givenBrandId = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
     Date givenStartDate = simpleDateFormat.parse("2020-06-14-00.00.00");
     Date givenEndDate = simpleDateFormat.parse("2020-12-31-23.59.59");
-    Long givenProductId = 35455L;
+    ProductId givenProductId = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
     Priority givenPriority = new Priority(0);
     PositiveMonetaryAmount givenpositiveMonetaryAmount =
         new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create());
@@ -61,10 +61,10 @@ public class PriceAggTest {
         RuntimeException.class,
         () -> new PriceAgg(
             new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
-            2L,
+            new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8")),
             simpleDateFormat.parse("2020-06-14-00.00.00"),
             simpleDateFormat.parse("2020-06-13-00.00.00"),
-            35455L,
+            new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067")),
             new Priority(0),
             new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create())
         )
@@ -80,10 +80,10 @@ public class PriceAggTest {
     Assertions.assertThrows(InvalidPriceWithPriorityException.class,
         () -> new PriceAgg(
             new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")),
-            2L,
+            new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8")),
             simpleDateFormat.parse("2020-06-14-00.00.00"),
             simpleDateFormat.parse("2020-12-31-23.59.59"),
-            35455L,
+            new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067")),
             new Priority(10),
             new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(150.40).create())
         )

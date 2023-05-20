@@ -8,13 +8,13 @@ public class PriceAgg {
 
   private PriceId id;
 
-  private Long brandId;
+  private BrandId brandId;
 
   private Date startDate;
 
   private Date endDate;
 
-  private Long productId;
+  private ProductId productId;
 
   private Priority priority;
 
@@ -22,10 +22,10 @@ public class PriceAgg {
 
   public PriceAgg(
       PriceId id,
-      Long brandId,
+      BrandId brandId,
       Date startDate,
       Date endDate,
-      Long productId,
+      ProductId productId,
       Priority priority,
       PositiveMonetaryAmount positiveMonetaryAmount
   ) {
@@ -62,7 +62,7 @@ public class PriceAgg {
     return id;
   }
 
-  public long getBrandId() {
+  public BrandId getBrandId() {
     return brandId;
   }
 
@@ -78,7 +78,7 @@ public class PriceAgg {
     this.id = id;
   }
 
-  public long getProductId() {
+  public ProductId getProductId() {
     return productId;
   }
 

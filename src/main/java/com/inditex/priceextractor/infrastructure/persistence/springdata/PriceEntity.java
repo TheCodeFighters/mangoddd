@@ -4,10 +4,12 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
+import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.Priority;
+import com.inditex.priceextractor.domain.ProductId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +31,8 @@ public class PriceEntity {
   @Column(name = "price_list", columnDefinition = "UUID")
   private UUID id;
 
-  @Column(name = "brand_id", nullable = false)
-  private long brandId;
+  @Column(name = "brand_id", nullable = false, columnDefinition = "UUID")
+  private UUID brandId;
 
   @Column(name = "start_date", nullable = false)
   @Temporal(TemporalType.TIMESTAMP)
@@ -42,14 +44,14 @@ public class PriceEntity {
   @NotNull
   private Date endDate;
 
-  @Column(name = "product_id", nullable = false)
-  private long productId;
+  @Column(name = "product_id", nullable = false, columnDefinition = "UUID")
+  private UUID productId;
 
   @Column(name = "priority", nullable = false)
-  private int priority;
+  private Integer priority;
 
   @Column(name = "price", nullable = false)
-  private double price;
+  private Double price;
 
   @Column(name = "curr", nullable = false)
   @NotNull
@@ -58,10 +60,10 @@ public class PriceEntity {
   public PriceAgg toPrice() {
     return new PriceAgg(
         new PriceId(id),
-        brandId,
+        new BrandId(brandId),
         startDate,
         endDate,
-        productId,
+        new ProductId(productId),
         new Priority(priority),
         new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create())
     );
