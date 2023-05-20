@@ -74,10 +74,6 @@ public class PriceAgg {
     return endDate;
   }
 
-  public void setId(PriceId id) {
-    this.id = id;
-  }
-
   public ProductId getProductId() {
     return productId;
   }
