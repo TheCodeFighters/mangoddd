@@ -1,6 +1,5 @@
 package com.inditex.priceextractor.infrastructure.persistence.jdbctemplate;
 
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,9 +35,10 @@ public class PriceEntityJdbcTemplate implements PriceRepository {
       @NonNull BrandId brandId,
       @NonNull Date date
   ) {
-    String sql = "SELECT * FROM prices WHERE product_id = :productId AND brand_id = :brandId " +
-        "AND :applicationDate BETWEEN start_date AND end_date " +
-        "ORDER BY priority DESC LIMIT 1";
+    String sql =
+        "SELECT BIN_TO_UUID(price_list) as price_list, BIN_TO_UUID(brand_id) as brand_id, curr, end_date, price, priority, BIN_TO_UUID"
+            + "(product_id) as product_id, start_date FROM prices WHERE product_id = UUID_TO_BIN(:productId) AND brand_id = UUID_TO_BIN"
+            + "(:brandId) AND :applicationDate BETWEEN start_date AND end_date ORDER BY priority DESC LIMIT 1";
 
     Map<String, Object> params = new HashMap<>();
     params.put("productId", productId.id().toString());

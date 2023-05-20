@@ -24,8 +24,8 @@ public class PriceSpringDataRepository implements com.inditex.priceextractor.dom
       @NonNull Date date
   ) {
     return priceEntitySpringDataRepository.findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
-        productId,
-        brandId,
+        productId.id(),
+        brandId.id(),
         date,
         date
     ).map(PriceEntity::toPrice);

@@ -28,10 +28,10 @@ import org.hibernate.annotations.Type;
 public class PriceEntity {
 
   @Id
-  @Column(name = "price_list", columnDefinition = "UUID")
+  @Column(name = "price_list", columnDefinition = "BINARY(16)")
   private UUID id;
 
-  @Column(name = "brand_id", nullable = false, columnDefinition = "UUID")
+  @Column(name = "brand_id", nullable = false, columnDefinition = "BINARY(16)")
   private UUID brandId;
 
   @Column(name = "start_date", nullable = false)
@@ -44,7 +44,7 @@ public class PriceEntity {
   @NotNull
   private Date endDate;
 
-  @Column(name = "product_id", nullable = false, columnDefinition = "UUID")
+  @Column(name = "product_id", nullable = false, columnDefinition = "BINARY(16)")
   private UUID productId;
 
   @Column(name = "priority", nullable = false)

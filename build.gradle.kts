@@ -24,7 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 	testImplementation("junit:junit:4.13.2")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+	runtimeOnly("mysql:mysql-connector-java")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.javamoney:moneta:1.4.2")
 }
