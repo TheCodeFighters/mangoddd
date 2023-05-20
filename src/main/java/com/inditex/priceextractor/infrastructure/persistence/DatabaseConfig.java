@@ -19,12 +19,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class DatabaseConfig {
 
   @Bean()
-  @Primary
   public PriceRepository springDataRepository(PriceEntitySpringDataRepository priceEntitySpringDataRepository) {
     return new PriceSpringDataRepository(priceEntitySpringDataRepository);
   }
 
   @Bean()
+  @Primary
   public PriceRepository jdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate,
       @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf) {
     return new PriceEntityJdbcTemplate(jdbcTemplate, sdf);
