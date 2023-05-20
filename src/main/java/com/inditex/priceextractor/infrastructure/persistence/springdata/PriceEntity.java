@@ -19,14 +19,15 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import javax.money.Monetary;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "prices")
 public class PriceEntity {
 
   @Id
-  @Column(name = "price_list")
-  private String id;
+  @Column(name = "price_list", columnDefinition = "UUID")
+  private UUID id;
 
   @Column(name = "brand_id", nullable = false)
   private long brandId;
@@ -56,7 +57,7 @@ public class PriceEntity {
 
   public PriceAgg toPrice() {
     return new PriceAgg(
-        new PriceId(UUID.fromString(id)),
+        new PriceId(id),
         brandId,
         startDate,
         endDate,
