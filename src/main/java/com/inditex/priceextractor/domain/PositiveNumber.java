@@ -1,5 +1,7 @@
 package com.inditex.priceextractor.domain;
 
+import com.inditex.priceextractor.domain.exception.PositiveNumberException;
+
 public record PositiveNumber(int value) {
 
   public PositiveNumber {

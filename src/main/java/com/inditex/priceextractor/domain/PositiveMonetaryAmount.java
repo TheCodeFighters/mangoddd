@@ -1,5 +1,7 @@
 package com.inditex.priceextractor.domain;
 
+import com.inditex.priceextractor.domain.exception.PositiveMonetaryAmountException;
+
 import javax.money.MonetaryAmount;
 
 public record PositiveMonetaryAmount(MonetaryAmount value) {

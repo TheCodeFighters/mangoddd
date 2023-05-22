@@ -2,8 +2,9 @@ package com.inditex.priceextractor.domain;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+
+import com.inditex.priceextractor.domain.exception.InvalidPriceWithPriorityException;
+import com.inditex.priceextractor.domain.exception.PriceAggException;
 
 import org.springframework.lang.NonNull;
 

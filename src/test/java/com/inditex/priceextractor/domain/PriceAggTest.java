@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.inditex.priceextractor.domain.exception.InvalidPriceWithPriorityException;
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 
 import javax.money.Monetary;

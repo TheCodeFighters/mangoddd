@@ -1,5 +1,7 @@
 package com.inditex.priceextractor.domain;
 
+import com.inditex.priceextractor.domain.exception.InvalidPriorityException;
+
 public class Priority {
 
   private Integer value;

@@ -1,5 +1,7 @@
 package com.inditex.priceextractor.domain;
 
+import com.inditex.priceextractor.domain.exception.DiscountException;
+
 public record Discount(PositiveNumber percentage) {
 
   public Discount {

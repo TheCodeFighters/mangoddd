@@ -2,6 +2,8 @@ package com.inditex.priceextractor.domain;
 
 import java.util.UUID;
 
+import com.inditex.priceextractor.domain.exception.PositiveMonetaryAmountException;
+
 import javax.money.Monetary;
 import org.javamoney.moneta.function.MonetaryOperators;
 

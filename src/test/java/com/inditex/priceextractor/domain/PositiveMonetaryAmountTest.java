@@ -3,6 +3,8 @@ package com.inditex.priceextractor.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
+import com.inditex.priceextractor.domain.exception.PositiveMonetaryAmountException;
+
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.junit.jupiter.api.DisplayName;

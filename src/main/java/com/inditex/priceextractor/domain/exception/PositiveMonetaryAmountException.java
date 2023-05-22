@@ -1,4 +1,4 @@
-package com.inditex.priceextractor.domain;
+package com.inditex.priceextractor.domain.exception;
 
 public class PositiveMonetaryAmountException extends DomainException {
 
