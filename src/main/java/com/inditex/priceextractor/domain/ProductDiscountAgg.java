@@ -7,7 +7,7 @@ import org.javamoney.moneta.function.MonetaryOperators;
 
 public class ProductDiscountAgg {
 
-  public static final UUID BRAND_CHINA = UUID.fromString("c3f8e657-c76b-46f8-9c2c-fb14fa5113c8");
+  private static final UUID BRAND_CHINA = UUID.fromString("c3f8e657-c76b-46f8-9c2c-fb14fa5113c8");
 
   private ProductDiscountId id;
 
@@ -15,8 +15,10 @@ public class ProductDiscountAgg {
 
   private Discount discount;
 
-  public ProductDiscountAgg(ProductDiscountId id) {
+  public ProductDiscountAgg(ProductDiscountId id, ProductId productId, Discount discount) {
     this.id = id;
+    this.productId = productId;
+    this.discount = discount;
   }
 
   public PositiveMonetaryAmount applyDiscount(PositiveMonetaryAmount positiveMonetaryAmount, BrandId brandId) {
@@ -33,7 +35,7 @@ public class ProductDiscountAgg {
   }
 
   private boolean isDiscountApplicable(BrandId brandId) {
-    return brandId.id().equals(BRAND_CHINA);
+    return !brandId.id().equals(BRAND_CHINA);
   }
 
   public ProductDiscountId getId() {

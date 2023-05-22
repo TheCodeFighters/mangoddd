@@ -2,7 +2,10 @@ package com.inditex.priceextractor.domain;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.lang.NonNull;
 
 public class PriceAgg {
 
@@ -23,16 +26,14 @@ public class PriceAgg {
   private ProductDiscountId productDiscountId;
 
   public PriceAgg(
-      PriceId id,
-      BrandId brandId,
-      Date startDate,
-      Date endDate,
-      ProductId productId,
-      Priority priority,
-      PositiveMonetaryAmount positiveMonetaryAmount,
-      ProductDiscountId productDiscountId
+      @NonNull PriceId id,
+      @NonNull BrandId brandId,
+      @NonNull Date startDate,
+      @NonNull Date endDate,
+      @NonNull ProductId productId,
+      @NonNull Priority priority,
+      @NonNull PositiveMonetaryAmount positiveMonetaryAmount
   ) {
-    this.productDiscountId = productDiscountId;
     this.assertDateRangeIsValid(startDate, endDate);
     this.assertPriceGreaterThan2Digits(priority, positiveMonetaryAmount);
     this.id = id;
@@ -42,6 +43,7 @@ public class PriceAgg {
     this.productId = productId;
     this.priority = priority;
     this.positiveMonetaryAmount = positiveMonetaryAmount;
+    this.productDiscountId = null;
   }
 
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
@@ -96,6 +98,13 @@ public class PriceAgg {
 
   public void setPositiveMonetaryAmount(PositiveMonetaryAmount positiveMonetaryAmount) {
     this.positiveMonetaryAmount = positiveMonetaryAmount;
+  }
+
+  public void setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
+    if (productDiscountAgg.getProductId().equals(this.productId)) {
+      this.productDiscountId = productDiscountAgg.getId();
+    }
+    throw new PriceAggException("productDiscountAgg is not applicable to this priceAgg because productIds are different");
   }
 
   @Override

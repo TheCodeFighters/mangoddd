@@ -12,4 +12,6 @@ public interface PriceRepository {
       @NonNull BrandId brandId,
       @NonNull Date date
   );
+
+  void Save(PriceAgg priceAgg);
 }
