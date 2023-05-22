@@ -20,6 +20,8 @@ public class PriceAgg {
 
   private PositiveMonetaryAmount positiveMonetaryAmount;
 
+  private ProductDiscountId productDiscountId;
+
   public PriceAgg(
       PriceId id,
       BrandId brandId,
@@ -27,8 +29,10 @@ public class PriceAgg {
       Date endDate,
       ProductId productId,
       Priority priority,
-      PositiveMonetaryAmount positiveMonetaryAmount
+      PositiveMonetaryAmount positiveMonetaryAmount,
+      ProductDiscountId productDiscountId
   ) {
+    this.productDiscountId = productDiscountId;
     this.assertDateRangeIsValid(startDate, endDate);
     this.assertPriceGreaterThan2Digits(priority, positiveMonetaryAmount);
     this.id = id;
@@ -86,6 +90,14 @@ public class PriceAgg {
     return positiveMonetaryAmount;
   }
 
+  public ProductDiscountId getProductDiscountId() {
+    return productDiscountId;
+  }
+
+  public void setPositiveMonetaryAmount(PositiveMonetaryAmount positiveMonetaryAmount) {
+    this.positiveMonetaryAmount = positiveMonetaryAmount;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -98,11 +110,11 @@ public class PriceAgg {
     return Objects.equals(id, priceAgg.id) && Objects.equals(brandId, priceAgg.brandId) && Objects.equals(
         startDate, priceAgg.startDate) && Objects.equals(endDate, priceAgg.endDate) && Objects.equals(productId,
         priceAgg.productId) && Objects.equals(priority, priceAgg.priority) && Objects.equals(positiveMonetaryAmount,
-        priceAgg.positiveMonetaryAmount);
+        priceAgg.positiveMonetaryAmount) && Objects.equals(productDiscountId, priceAgg.productDiscountId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount);
+    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount, productDiscountId);
   }
 }
