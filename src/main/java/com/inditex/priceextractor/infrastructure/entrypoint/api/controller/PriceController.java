@@ -1,9 +1,11 @@
 package com.inditex.priceextractor.infrastructure.entrypoint.api.controller;
 
-import com.inditex.priceextractor.application.GetCurrentPriceRequestDto;
-import com.inditex.priceextractor.application.PriceDto;
-import com.inditex.priceextractor.application.PriceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.inditex.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
+import com.inditex.priceextractor.application.priceservice.PriceDto;
+import com.inditex.priceextractor.application.priceservice.PriceService;
+import com.inditex.priceextractor.domain.exception.DateFormatException;
+import com.inditex.priceextractor.domain.exception.DomainException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,15 +34,15 @@ public class PriceController {
 
         try {
             return ResponseEntity.ok()
-                    .body(
-                            this.priceService.getCurrentPrice(
-                                    new GetCurrentPriceRequestDto(applicationDate, productId, brandId)
-                            )
-                    );
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (ParseException e) {
+                .body(
+                    this.priceService.getCurrentPrice(
+                        new GetCurrentPriceRequestDto(applicationDate, productId, brandId)
+                    )
+                );
+        } catch (DateFormatException e) {
             return ResponseEntity.badRequest().body(null);
+        } catch (DomainException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 }

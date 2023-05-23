@@ -1,4 +1,4 @@
-package com.inditex.priceextractor.application;
+package com.inditex.priceextractor.application.priceservice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

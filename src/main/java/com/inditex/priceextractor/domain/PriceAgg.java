@@ -33,7 +33,8 @@ public class PriceAgg {
       @NonNull Date endDate,
       @NonNull ProductId productId,
       @NonNull Priority priority,
-      @NonNull PositiveMonetaryAmount positiveMonetaryAmount
+      @NonNull PositiveMonetaryAmount positiveMonetaryAmount,
+      ProductDiscountId productDiscountId
   ) {
     this.assertDateRangeIsValid(startDate, endDate);
     this.assertPriceGreaterThan2Digits(priority, positiveMonetaryAmount);
@@ -44,7 +45,7 @@ public class PriceAgg {
     this.productId = productId;
     this.priority = priority;
     this.positiveMonetaryAmount = positiveMonetaryAmount;
-    this.productDiscountId = null;
+    this.productDiscountId = productDiscountId;
   }
 
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
@@ -97,13 +98,31 @@ public class PriceAgg {
     return productDiscountId;
   }
 
-  public void setPositiveMonetaryAmount(PositiveMonetaryAmount positiveMonetaryAmount) {
-    this.positiveMonetaryAmount = positiveMonetaryAmount;
+  public PriceAgg setPositiveMonetaryAmount(PositiveMonetaryAmount positiveMonetaryAmount) {
+    return new PriceAgg(
+        this.id,
+        this.brandId,
+        this.startDate,
+        this.endDate,
+        this.productId,
+        this.priority,
+        positiveMonetaryAmount,
+        null
+    );
   }
 
-  public void setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
+  public PriceAgg setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
     if (productDiscountAgg.getProductId().equals(this.productId)) {
-      this.productDiscountId = productDiscountAgg.getId();
+      return new PriceAgg(
+          this.id,
+          this.brandId,
+          this.startDate,
+          this.endDate,
+          this.productId,
+          this.priority,
+          this.getPositiveMonetaryAmount(),
+          productDiscountAgg.getId()
+      );
     }
     throw new PriceAggException("productDiscountAgg is not applicable to this priceAgg because productIds are different");
   }

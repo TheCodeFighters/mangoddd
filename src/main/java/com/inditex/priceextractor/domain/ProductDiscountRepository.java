@@ -6,5 +6,5 @@ import org.springframework.lang.NonNull;
 
 public interface ProductDiscountRepository {
 
-  Optional<ProductDiscountAgg> findByProductDiscountId(@NonNull ProductDiscountId productDiscountId);
+  ProductDiscountAgg findByProductDiscountId(@NonNull ProductDiscountId productDiscountId);
 }

@@ -9,19 +9,17 @@ import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.Priority;
+import com.inditex.priceextractor.domain.ProductDiscountId;
 import com.inditex.priceextractor.domain.ProductId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import javax.money.Monetary;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "prices")
@@ -32,6 +30,7 @@ public class PriceEntity {
   private UUID id;
 
   @Column(name = "brand_id", nullable = false, columnDefinition = "BINARY(16)")
+  @NotNull
   private UUID brandId;
 
   @Column(name = "start_date", nullable = false)
@@ -45,17 +44,23 @@ public class PriceEntity {
   private Date endDate;
 
   @Column(name = "product_id", nullable = false, columnDefinition = "BINARY(16)")
+  @NotNull
   private UUID productId;
 
   @Column(name = "priority", nullable = false)
+  @NotNull
   private Integer priority;
 
   @Column(name = "price", nullable = false)
+  @NotNull
   private Double price;
 
   @Column(name = "curr", nullable = false)
   @NotNull
   private Currency curr;
+
+  @Column(name = "product_discount_id", nullable = false, columnDefinition = "BINARY(16)")
+  private UUID productDiscountId;
 
   public PriceAgg toPrice() {
     return new PriceAgg(
@@ -65,7 +70,8 @@ public class PriceEntity {
         endDate,
         new ProductId(productId),
         new Priority(priority),
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create())
+        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create()),
+        new ProductDiscountId(productDiscountId)
     );
   }
 

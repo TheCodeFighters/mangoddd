@@ -1,6 +1,6 @@
 package com.inditex.priceextractor.domain;
 
-public interface ProductDiscountRetriever {
+public interface ProductDiscountERPRepository {
 
   ProductDiscountAgg retrieveProductDiscount(ProductId productId);
 }
