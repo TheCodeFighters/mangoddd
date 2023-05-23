@@ -16,8 +16,7 @@ class PositiveMonetaryAmountTest {
   @DisplayName("when monetary amount is positive the sould work properly")
   public void test_1() {
     MonetaryAmount givenMonetaryAmount = Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create();
-    PositiveMonetaryAmount actual =
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create());
+    PositiveMonetaryAmount actual = PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR");
     assertEquals(givenMonetaryAmount, actual.value());
   }
 
@@ -25,7 +24,7 @@ class PositiveMonetaryAmountTest {
   @DisplayName("when monetary amount is negative then throw exception")
   public void test_2() {
     assertThrows(PositiveMonetaryAmountException.class, () ->
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(-35.40).create()));
+        PositiveMonetaryAmount.fromDoubleAndCurrency(-35.40, "EUR"));
   }
 
 }

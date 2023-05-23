@@ -39,7 +39,7 @@ public class PriceAggExtractor {
           resultEndDate,
           resultProductId,
           new Priority(resultPriority),
-          new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(resultCurr).setNumber(resultPrice).create()),
+          PositiveMonetaryAmount.fromDoubleAndCurrency(resultPrice, resultCurr),
           resultProductDiscountId
       );
     } catch (SQLException e) {

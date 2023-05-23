@@ -100,7 +100,7 @@ public class PriceServiceUnitTest {
         simpleDateFormat.parse("2020-12-31-23.59.59"),
         ProductId.fromString(givenRequest.productId()),
         new Priority(0),
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(34.50).create()),
+        PositiveMonetaryAmount.fromDoubleAndCurrency(34.50, "EUR"),
         null
     );
   }

@@ -28,9 +28,7 @@ public class ProductDiscountAgg {
       try {
         return new PositiveMonetaryAmount(positiveMonetaryAmount.value().with(MonetaryOperators.percent(discount.percentage().value())));
       } catch (PositiveMonetaryAmountException e) {
-        return new PositiveMonetaryAmount(
-            Monetary.getDefaultAmountFactory().setCurrency(positiveMonetaryAmount.value().getCurrency()).setNumber(0).create()
-        );
+        return PositiveMonetaryAmount.fromDoubleAndCurrency(0d, positiveMonetaryAmount.value().getCurrency().toString());
       }
     }
     return positiveMonetaryAmount;

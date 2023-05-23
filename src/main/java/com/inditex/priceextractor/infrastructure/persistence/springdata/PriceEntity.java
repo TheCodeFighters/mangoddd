@@ -70,7 +70,7 @@ public class PriceEntity {
         endDate,
         new ProductId(productId),
         new Priority(priority),
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(curr.getCurrencyCode()).setNumber(price).create()),
+        PositiveMonetaryAmount.fromDoubleAndCurrency(price, curr.getCurrencyCode()),
         new ProductDiscountId(productDiscountId)
     );
   }

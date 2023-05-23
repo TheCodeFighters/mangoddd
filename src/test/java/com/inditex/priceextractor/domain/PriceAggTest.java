@@ -33,8 +33,7 @@ public class PriceAggTest {
     Date givenEndDate = simpleDateFormat.parse("2020-12-31-23.59.59");
     ProductId givenProductId = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
     Priority givenPriority = new Priority(0);
-    PositiveMonetaryAmount givenpositiveMonetaryAmount =
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create());
+    PositiveMonetaryAmount givenpositiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR");
     ProductDiscountId givenProductDiscountId = ProductDiscountId.fromString("25830ea3-b572-48f6-9804-ad0acb17082c");
 
     PriceAgg priceAggregate = new PriceAgg(
@@ -70,7 +69,7 @@ public class PriceAggTest {
             simpleDateFormat.parse("2020-06-13-00.00.00"),
             ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
             new Priority(0),
-            new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(35.40).create()),
+            PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR"),
             ProductDiscountId.fromString("25830ea3-b572-48f6-9804-ad0acb17082c")
         )
     );
@@ -90,7 +89,7 @@ public class PriceAggTest {
             simpleDateFormat.parse("2020-12-31-23.59.59"),
             ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
             new Priority(10),
-            new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency("EUR").setNumber(150.40).create()),
+            PositiveMonetaryAmount.fromDoubleAndCurrency(150.40, "EUR"),
             ProductDiscountId.fromString("25830ea3-b572-48f6-9804-ad0acb17082c")
         )
     );

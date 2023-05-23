@@ -94,7 +94,7 @@ class JdbcTemplatePriceRepositoryIT {
         simpleDateFormat.parse(END_DATE),
         new ProductId(PRODUCT_ID),
         new Priority(PRIORITY),
-        new PositiveMonetaryAmount(Monetary.getDefaultAmountFactory().setCurrency(CURRENCY).setNumber(PRICE).create()),
+        PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY),
         new ProductDiscountId(PRODUCT_DISCOUNT_ID)
     );
   }
