@@ -4,34 +4,42 @@ import java.util.UUID;
 
 import com.inditex.priceextractor.domain.exception.PositiveMonetaryAmountException;
 
-import javax.money.Monetary;
 import org.javamoney.moneta.function.MonetaryOperators;
 
 public class ProductDiscountAgg {
 
-  private static final UUID BRAND_CHINA = UUID.fromString("c3f8e657-c76b-46f8-9c2c-fb14fa5113c8");
+  public static final UUID BRAND_CHINA = UUID.fromString("c3f8e657-c76b-46f8-9c2c-fb14fa5113c8");
 
-  private ProductDiscountId id;
+  private final ProductDiscountId id;
 
-  private ProductId productId;
+  private final ProductId productId;
 
-  private Discount discount;
+  private final DiscountPercentage discountPercentage;
 
-  public ProductDiscountAgg(ProductDiscountId id, ProductId productId, Discount discount) {
+  public ProductDiscountAgg(ProductDiscountId id, ProductId productId, DiscountPercentage discountPercentage) {
     this.id = id;
     this.productId = productId;
-    this.discount = discount;
+    this.discountPercentage = discountPercentage;
   }
 
   public PositiveMonetaryAmount applyDiscount(PositiveMonetaryAmount positiveMonetaryAmount, BrandId brandId) {
+    return new PositiveMonetaryAmount(
+        positiveMonetaryAmount.value().subtract(
+            getDiscountAmount(positiveMonetaryAmount, brandId).value()
+        )
+    );
+  }
+
+  public PositiveMonetaryAmount getDiscountAmount(PositiveMonetaryAmount positiveMonetaryAmount, BrandId brandId) {
     if (isDiscountApplicable(brandId)) {
-      try {
-        return new PositiveMonetaryAmount(positiveMonetaryAmount.value().with(MonetaryOperators.percent(discount.percentage().value())));
-      } catch (PositiveMonetaryAmountException e) {
-        return PositiveMonetaryAmount.fromDoubleAndCurrency(0d, positiveMonetaryAmount.value().getCurrency().toString());
-      }
+      return new PositiveMonetaryAmount(
+          positiveMonetaryAmount.value().with(
+              MonetaryOperators.percent(
+                  discountPercentage.percentage().value())
+          )
+      );
     }
-    return positiveMonetaryAmount;
+    return PositiveMonetaryAmount.fromDoubleAndCurrency(0d, positiveMonetaryAmount.value().getCurrency().toString());
   }
 
   private boolean isDiscountApplicable(BrandId brandId) {
@@ -46,7 +54,7 @@ public class ProductDiscountAgg {
     return productId;
   }
 
-  public Discount getDiscount() {
-    return discount;
+  public DiscountPercentage getDiscountPercentage() {
+    return discountPercentage;
   }
 }

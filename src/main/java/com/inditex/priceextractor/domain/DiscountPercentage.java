@@ -2,9 +2,9 @@ package com.inditex.priceextractor.domain;
 
 import com.inditex.priceextractor.domain.exception.DiscountException;
 
-public record Discount(PositiveNumber percentage) {
+public record DiscountPercentage(PositiveNumber percentage) {
 
-  public Discount {
+  public DiscountPercentage {
     if (percentage.value() > 50) {
       throw new DiscountException("Percentage must not be greater than 50%");
     }
