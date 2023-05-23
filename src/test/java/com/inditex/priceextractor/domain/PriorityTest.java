@@ -14,7 +14,7 @@ class PriorityTest {
   @DisplayName("given a valid priority, then return a priority object")
   public void test_1() {
     Priority priority = new Priority(1);
-    assertEquals(1, priority.getValue());
+    assertEquals(1, priority.value());
   }
 
   @Test

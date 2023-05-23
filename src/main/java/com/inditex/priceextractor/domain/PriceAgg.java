@@ -56,7 +56,7 @@ public class PriceAgg {
 
   private void assertPriceGreaterThan2Digits(Priority priority, PositiveMonetaryAmount positiveMonetaryAmount) {
     Long amount = positiveMonetaryAmount.value().getNumber().numberValue(Long.class);
-    if (countDigits(amount) > 2 && priority.getValue() <= 10) {
+    if (countDigits(amount) > 2 && priority.value() <= 10) {
       throw new InvalidPriceWithPriorityException("DomainError: price is greater than 999.99 and priority is less than 10");
     }
   }

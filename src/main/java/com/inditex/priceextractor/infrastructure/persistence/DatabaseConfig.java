@@ -3,9 +3,10 @@ package com.inditex.priceextractor.infrastructure.persistence;
 import java.text.SimpleDateFormat;
 
 import com.inditex.priceextractor.domain.PriceRepository;
-import com.inditex.priceextractor.infrastructure.persistence.jdbctemplate.PriceEntityJdbcTemplate;
-import com.inditex.priceextractor.infrastructure.persistence.springdata.PriceSpringDataRepository;
-import com.inditex.priceextractor.infrastructure.persistence.springdata.crudrepository.PriceEntitySpringDataRepository;
+import com.inditex.priceextractor.infrastructure.persistence.jdbctemplate.JdbcTemplatePriceRepository;
+import com.inditex.priceextractor.infrastructure.persistence.jdbctemplate.PriceAggExtractor;
+import com.inditex.priceextractor.infrastructure.persistence.springdata.SpringDataPriceRepository;
+import com.inditex.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataPriceEntityRepository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +21,14 @@ public class DatabaseConfig {
 
   @Bean()
   @Primary
-  public PriceRepository springDataRepository(PriceEntitySpringDataRepository priceEntitySpringDataRepository) {
-    return new PriceSpringDataRepository(priceEntitySpringDataRepository);
+  public PriceRepository springDataRepository(SpringDataPriceEntityRepository springDataPriceEntityRepository) {
+    return new SpringDataPriceRepository(springDataPriceEntityRepository);
   }
 
   @Bean()
   public PriceRepository jdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate,
-      @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf) {
-    return new PriceEntityJdbcTemplate(jdbcTemplate, sdf);
+      @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, PriceAggExtractor priceAggExtractor) {
+    return new JdbcTemplatePriceRepository(jdbcTemplate, sdf, priceAggExtractor);
   }
 
 }
