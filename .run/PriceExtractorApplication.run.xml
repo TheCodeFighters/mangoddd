@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PriceExtractorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <module name="priceextractor.main" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.inditex.priceextractor.PriceExtractorApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.apium.priceextractor.PriceExtractorApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
