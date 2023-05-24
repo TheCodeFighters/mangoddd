@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import com.inditex.priceextractor.domain.BrandId;
@@ -19,12 +17,10 @@ import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.Priority;
-import com.inditex.priceextractor.domain.ProductDiscountId;
 import com.inditex.priceextractor.domain.ProductId;
 import com.inditex.priceextractor.domain.exception.DomainEntityNotFoundException;
 import com.inditex.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 
-import javax.money.Monetary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
