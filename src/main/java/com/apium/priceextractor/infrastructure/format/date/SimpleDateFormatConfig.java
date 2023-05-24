@@ -8,13 +8,8 @@ import java.text.SimpleDateFormat;
 
 @Configuration
 public class SimpleDateFormatConfig {
-    @Bean
-    @Primary
-    public SimpleDateFormat simpleDateFormat(){
-        return new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
-    }
 
-    @Bean("SimpleDateFormatForDatabase")
+    @Bean()
     public SimpleDateFormat simpleDateFormatForDatabase(){
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
     }

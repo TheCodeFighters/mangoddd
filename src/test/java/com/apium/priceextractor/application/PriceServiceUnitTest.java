@@ -5,7 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.text.ParseException;
 import java.util.UUID;
 
 import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
@@ -13,16 +12,12 @@ import com.apium.priceextractor.application.priceservice.PriceService;
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.DateRange;
-import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceDto;
 import com.apium.priceextractor.domain.PriceId;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.Priority;
-import com.apium.priceextractor.domain.ProductDiscountAgg;
-import com.apium.priceextractor.domain.ProductDiscountId;
-import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
 import com.apium.priceextractor.domain.exception.DateFormatException;
 import com.apium.priceextractor.domain.exception.DomainEntityNotFoundException;
@@ -47,15 +42,12 @@ public class PriceServiceUnitTest {
   @Mock
   PriceRepository priceRepositoryMock;
 
-  @Mock
-  ProductDiscountRepository productDiscountRepositoryMock;
-
   PriceService priceService;
 
   @BeforeEach
   public void setup() {
     openMocks = MockitoAnnotations.openMocks(this);
-    priceService = new PriceService(priceRepositoryMock, productDiscountRepositoryMock);
+    priceService = new PriceService(priceRepositoryMock);
   }
 
   @AfterEach
@@ -64,7 +56,7 @@ public class PriceServiceUnitTest {
   }
 
   @Test
-  public void givenValidRequest_thenValidPriceResponseDtoReturned() throws ParseException {
+  public void givenValidRequest_thenValidPriceResponseDtoReturned() {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
 
@@ -74,9 +66,6 @@ public class PriceServiceUnitTest {
 
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
-    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(
-        new ProductDiscountAgg(null, givenProductId, DiscountPercentage.fromDouble(0d)));
-
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
@@ -85,7 +74,7 @@ public class PriceServiceUnitTest {
   }
 
   @Test
-  @DisplayName("given a valid request with a product with ProductPriceDiscount then PriceAgg with discount is returned")
+  @DisplayName("given a valid request then PriceAgg is returned")
   public void test_1() {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
@@ -96,15 +85,11 @@ public class PriceServiceUnitTest {
 
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
-    ProductDiscountAgg givenProductDiscountAgg = createPriceDiscount();
-
-    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(givenProductDiscountAgg);
-
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
 
-    givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(33.465, "EUR"));
+    givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(34.5, "EUR"));
 
     Assertions.assertEquals(givenPriceAgg.toDto(), priceResponseDto);
 
@@ -134,16 +119,8 @@ public class PriceServiceUnitTest {
     );
   }
 
-  private ProductDiscountAgg createPriceDiscount() {
-    return new ProductDiscountAgg(
-        ProductDiscountId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
-        ProductId.fromString(GIVEN_VALID_REQUEST.productId()),
-        DiscountPercentage.fromDouble(3d)
-    );
-  }
-
   @Test()
-  public void givenValidRequestWithNoPriceAssociated_thenRuntimeExceptionIsThrown() throws ParseException {
+  public void givenValidRequestWithNoPriceAssociated_thenRuntimeExceptionIsThrown() {
 
     Date givenApplicationDate = Date.fromString(GIVEN_VALID_REQUEST.applicationDate());
     ProductId givenProductId = new ProductId(UUID.fromString(GIVEN_VALID_REQUEST.productId()));
