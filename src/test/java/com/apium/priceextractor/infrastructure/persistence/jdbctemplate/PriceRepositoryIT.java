@@ -4,11 +4,11 @@ import static org.junit.Assert.assertThrows;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import com.apium.priceextractor.PriceExtractorApplication;
 import com.apium.priceextractor.domain.BrandId;
+import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceId;
@@ -63,7 +63,7 @@ class PriceRepositoryIT {
   public void test_0() throws ParseException {
     ProductId givenProductId = ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
-    Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
+    Date givenDate = Date.fromString("2020-06-14-10.00.00");
     PriceAgg actualPriceAgg = priceRepository.findOrFailRate(givenProductId, givenBrandId, givenDate);
     PriceAgg expectedPriceAgg = createPriceAgg();
     Assertions.assertEquals(expectedPriceAgg, actualPriceAgg);
@@ -72,20 +72,20 @@ class PriceRepositoryIT {
   @Test
   @Transactional
   @DisplayName("getting a non existent PriceAgg then should thrown DomainEntityNotFoundException")
-  public void test_1() throws ParseException {
+  public void test_1() {
     ProductId givenNonExistentProductId = ProductId.fromString("11ff7f41-50a4-47f0-a27b-1987ce29bbf8");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
-    Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
+    Date givenDate = Date.fromString("2020-06-14-10.00.00");
     assertThrows(DomainEntityNotFoundException.class,
         () -> priceRepository.findOrFailRate(givenNonExistentProductId, givenBrandId, givenDate));
   }
 
-  private PriceAgg createPriceAgg() throws ParseException {
+  private PriceAgg createPriceAgg() {
     return new PriceAgg(
         new PriceId(PRICE_ID),
         new BrandId(BRAND_ID),
-        simpleDateFormat.parse(START_DATE),
-        simpleDateFormat.parse(END_DATE),
+        Date.fromString(START_DATE),
+        Date.fromString(END_DATE),
         new ProductId(PRODUCT_ID),
         new Priority(PRIORITY),
         PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY)

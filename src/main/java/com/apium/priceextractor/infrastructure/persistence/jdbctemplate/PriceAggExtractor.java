@@ -31,8 +31,8 @@ public class PriceAggExtractor {
       return new PriceAgg(
           resultId,
           resultBrandId,
-          resultStartDate,
-          resultEndDate,
+          new com.apium.priceextractor.domain.Date(resultStartDate),
+          new com.apium.priceextractor.domain.Date(resultEndDate),
           resultProductId,
           new Priority(resultPriority),
           PositiveMonetaryAmount.fromDoubleAndCurrency(resultPrice, resultCurr)

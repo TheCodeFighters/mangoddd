@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.apium.priceextractor.domain.DiscountPercentage;
+import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
@@ -35,7 +37,8 @@ public class JdbcTemplateProductDiscountRepository implements ProductDiscountRep
     params.put("productId", productId.id().toString());
 
     return jdbcTemplate.query(sql, params, (resultSet, rowNum) -> productDiscountAggExtractor.extractProductDiscountAgg(resultSet)
-    ).stream().findFirst().orElseThrow(() ->
-        new DomainEntityNotFoundException("PriceAgg not found"));
+    ).stream().findFirst().orElse(
+        new ProductDiscountAgg(null, productId, new DiscountPercentage(new PositiveNumber(0d)))
+    );
   }
 }

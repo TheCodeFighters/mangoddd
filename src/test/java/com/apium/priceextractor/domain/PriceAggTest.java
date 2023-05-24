@@ -4,7 +4,6 @@ import static org.junit.Assert.assertThrows;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import com.apium.priceextractor.domain.exception.InvalidPriceWithPriorityException;
@@ -27,8 +26,8 @@ public class PriceAggTest {
   public void givenValidData_thenShouldWork() throws ParseException {
     PriceId givenPriceId = new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"));
     BrandId givenBrandId = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
-    Date givenStartDate = simpleDateFormat.parse("2020-06-14-00.00.00");
-    Date givenEndDate = simpleDateFormat.parse("2020-12-31-23.59.59");
+    Date givenStartDate = Date.fromString("2020-06-14-00.00.00");
+    Date givenEndDate = Date.fromString("2020-12-31-23.59.59");
     ProductId givenProductId = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
     Priority givenPriority = new Priority(0);
     PositiveMonetaryAmount givenpositiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR");
@@ -60,8 +59,8 @@ public class PriceAggTest {
         () -> new PriceAgg(
             PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
             BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"),
-            simpleDateFormat.parse("2020-06-14-00.00.00"),
-            simpleDateFormat.parse("2020-06-13-00.00.00"),
+            Date.fromString("2020-06-14-00.00.00"),
+            Date.fromString("2020-06-13-00.00.00"),
             ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
             new Priority(0),
             PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR")
@@ -79,8 +78,8 @@ public class PriceAggTest {
         () -> new PriceAgg(
             PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
             BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"),
-            simpleDateFormat.parse("2020-06-14-00.00.00"),
-            simpleDateFormat.parse("2020-12-31-23.59.59"),
+            Date.fromString("2020-06-14-00.00.00"),
+            Date.fromString("2020-12-31-23.59.59"),
             ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
             new Priority(10),
             PositiveMonetaryAmount.fromDoubleAndCurrency(150.40, "EUR")

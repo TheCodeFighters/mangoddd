@@ -24,26 +24,25 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 public class DatabaseConfig {
 
   @Bean()
-
+  @Primary
   public PriceRepository springDataPriceRepository(SpringDataPriceEntityRepository springDataPriceEntityRepository) {
     return new SpringDataPriceRepository(springDataPriceEntityRepository);
   }
 
   @Bean()
+  @Primary
   public ProductDiscountRepository springDataProductDiscountRepository(
       SpringDataProductDiscountEntityRepository springDataPriceEntityRepository) {
     return new SpringDataProductPriceRepository(springDataPriceEntityRepository);
   }
 
   @Bean()
-  @Primary
   public PriceRepository jdbcTemplatePriceRepository(NamedParameterJdbcTemplate jdbcTemplate,
       @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, PriceAggExtractor priceAggExtractor) {
     return new JdbcTemplatePriceRepository(jdbcTemplate, sdf, priceAggExtractor);
   }
 
   @Bean()
-  @Primary
   public ProductDiscountRepository jdbcTemplateProductDiscountRepository(NamedParameterJdbcTemplate jdbcTemplate,
       @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, ProductDiscountAggExtractor productDiscountAggExtractor) {
     return new JdbcTemplateProductDiscountRepository(jdbcTemplate, sdf, productDiscountAggExtractor);

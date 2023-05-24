@@ -60,8 +60,8 @@ public class PriceEntity {
     return new PriceAgg(
         new PriceId(id),
         new BrandId(brandId),
-        startDate,
-        endDate,
+        new com.apium.priceextractor.domain.Date(startDate),
+        new com.apium.priceextractor.domain.Date(endDate),
         new ProductId(productId),
         new Priority(priority),
         PositiveMonetaryAmount.fromDoubleAndCurrency(price, curr.getCurrencyCode())

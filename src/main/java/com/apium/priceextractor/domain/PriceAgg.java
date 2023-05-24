@@ -1,8 +1,6 @@
 package com.apium.priceextractor.domain;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
 
 import com.apium.priceextractor.domain.exception.InvalidPriceWithPriorityException;
 import com.apium.priceextractor.domain.exception.PriceAggException;
@@ -11,7 +9,6 @@ import org.springframework.lang.NonNull;
 public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate, ProductId productId, Priority priority,
                        PositiveMonetaryAmount positiveMonetaryAmount) {
 
-  //TODO vamos a crear un assert en el enunciado que este directamente en el agreado
   public PriceAgg(
       @NonNull PriceId id,
       @NonNull BrandId brandId,
@@ -34,7 +31,7 @@ public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate
 
   //TODO extraemos esto a un DateRange
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
-    if (!startDate.before(endDate)) {
+    if (!startDate.date().before(endDate.date())) {
       throw new RuntimeException("DomainError: startDate can not bee newer than endDate");
     }
   }
@@ -80,13 +77,14 @@ public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate
     );
   }
 
-  public PriceDto toDto(SimpleDateFormat simpleDateFormat) {
+  public PriceDto toDto() {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
     return new PriceDto(
         id.toString(),
         productId.toString(),
         brandId.toString(),
-        simpleDateFormat.format(startDate),
-        simpleDateFormat.format(endDate),
+        simpleDateFormat.format(startDate.date()),
+        simpleDateFormat.format(endDate.date()),
         positiveMonetaryAmount.value().getNumber().doubleValue()
     );
   }

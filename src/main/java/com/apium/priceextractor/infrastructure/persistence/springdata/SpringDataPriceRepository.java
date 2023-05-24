@@ -1,8 +1,8 @@
 package com.apium.priceextractor.infrastructure.persistence.springdata;
 
-import java.util.Date;
 
 import com.apium.priceextractor.domain.BrandId;
+import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductId;
@@ -26,8 +26,8 @@ public class SpringDataPriceRepository implements PriceRepository {
     return springDataPriceEntityRepository.findFirstByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqualOrderByPriorityDesc(
         productId.id(),
         brandId.id(),
-        date,
-        date
+        date.date(),
+        date.date()
     ).map(PriceEntity::toPrice).orElseThrow(() -> new DomainEntityNotFoundException("PriceAgg not found"));
   }
 

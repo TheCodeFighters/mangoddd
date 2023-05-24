@@ -6,13 +6,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
 import com.apium.priceextractor.application.priceservice.PriceService;
 import com.apium.priceextractor.domain.BrandId;
+import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PositiveNumber;
@@ -27,7 +26,6 @@ import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
 import com.apium.priceextractor.domain.exception.DateFormatException;
 import com.apium.priceextractor.domain.exception.DomainEntityNotFoundException;
-import com.apium.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,15 +50,12 @@ public class PriceServiceUnitTest {
   @Mock
   ProductDiscountRepository productDiscountRepositoryMock;
 
-  SimpleDateFormat simpleDateFormat;
-
   PriceService priceService;
 
   @BeforeEach
   public void setup() {
     openMocks = MockitoAnnotations.openMocks(this);
-    simpleDateFormat = new SimpleDateFormatConfig().simpleDateFormat();
-    priceService = new PriceService(priceRepositoryMock, simpleDateFormat, productDiscountRepositoryMock);
+    priceService = new PriceService(priceRepositoryMock, productDiscountRepositoryMock);
   }
 
   @AfterEach
@@ -73,29 +68,29 @@ public class PriceServiceUnitTest {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
 
-    Date givenApplicationDate = simpleDateFormat.parse(GIVEN_VALID_REQUEST.applicationDate());
+    Date givenApplicationDate = Date.fromString(GIVEN_VALID_REQUEST.applicationDate());
     ProductId givenProductId = ProductId.fromString(GIVEN_VALID_REQUEST.productId());
     BrandId givenBrandId = new BrandId(UUID.fromString(GIVEN_VALID_REQUEST.brandId()));
 
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
-    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenThrow(
-        new DomainEntityNotFoundException("ProductDiscount not found"));
+    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(
+        new ProductDiscountAgg(null, givenProductId, new DiscountPercentage(new PositiveNumber(0d))));
 
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
 
-    Assertions.assertEquals(givenPriceAgg.toDto(simpleDateFormat), priceResponseDto);
+    Assertions.assertEquals(givenPriceAgg.toDto(), priceResponseDto);
   }
 
   @Test
   @DisplayName("given a valid request with a product with ProductPriceDiscount then PriceAgg with discount is returned")
-  public void test_1() throws ParseException {
+  public void test_1() {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
 
-    Date givenApplicationDate = simpleDateFormat.parse(GIVEN_VALID_REQUEST.applicationDate());
+    Date givenApplicationDate = Date.fromString(GIVEN_VALID_REQUEST.applicationDate());
     ProductId givenProductId = ProductId.fromString(GIVEN_VALID_REQUEST.productId());
     BrandId givenBrandId = new BrandId(UUID.fromString(GIVEN_VALID_REQUEST.brandId()));
 
@@ -111,7 +106,7 @@ public class PriceServiceUnitTest {
 
     givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(33.465, "EUR"));
 
-    Assertions.assertEquals(givenPriceAgg.toDto(simpleDateFormat), priceResponseDto);
+    Assertions.assertEquals(givenPriceAgg.toDto(), priceResponseDto);
 
   }
 
@@ -128,12 +123,12 @@ public class PriceServiceUnitTest {
     assertThrows(DateFormatException.class, () -> priceService.getCurrentPrice(givenInvalidRequest));
   }
 
-  private PriceAgg cretePriceAgg() throws ParseException {
+  private PriceAgg cretePriceAgg() {
     return new PriceAgg(
         PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
         BrandId.fromString(GIVEN_VALID_REQUEST.brandId()),
-        simpleDateFormat.parse("2020-06-14-00.00.00"),
-        simpleDateFormat.parse("2020-12-31-23.59.59"),
+        Date.fromString("2020-06-14-00.00.00"),
+        Date.fromString("2020-12-31-23.59.59"),
         ProductId.fromString(GIVEN_VALID_REQUEST.productId()),
         new Priority(0),
         PositiveMonetaryAmount.fromDoubleAndCurrency(34.50, "EUR")
@@ -151,7 +146,7 @@ public class PriceServiceUnitTest {
   @Test()
   public void givenValidRequestWithNoPriceAssociated_thenRuntimeExceptionIsThrown() throws ParseException {
 
-    Date givenApplicationDate = simpleDateFormat.parse(GIVEN_VALID_REQUEST.applicationDate());
+    Date givenApplicationDate = Date.fromString(GIVEN_VALID_REQUEST.applicationDate());
     ProductId givenProductId = new ProductId(UUID.fromString(GIVEN_VALID_REQUEST.productId()));
     BrandId givenBrandId = new BrandId(UUID.fromString(GIVEN_VALID_REQUEST.brandId()));
 

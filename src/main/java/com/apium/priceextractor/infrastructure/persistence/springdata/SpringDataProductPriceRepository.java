@@ -1,5 +1,7 @@
 package com.apium.priceextractor.infrastructure.persistence.springdata;
 
+import com.apium.priceextractor.domain.DiscountPercentage;
+import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
@@ -17,6 +19,6 @@ public class SpringDataProductPriceRepository implements ProductDiscountReposito
   @Override
   public ProductDiscountAgg findOrDefaultByProductId(ProductId productId) {
     return springDataProductDiscountEntityRepository.findByProductId(productId.id()).map(ProductDiscountEntity::toProductDiscountAgg)
-        .orElseThrow(() -> new DomainEntityNotFoundException("ProductDiscountAgg not found"));
+        .orElse(new ProductDiscountAgg(null, productId, new DiscountPercentage(new PositiveNumber(0d))));
   }
 }

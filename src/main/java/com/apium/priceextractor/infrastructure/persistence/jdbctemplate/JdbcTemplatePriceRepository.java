@@ -1,11 +1,11 @@
 package com.apium.priceextractor.infrastructure.persistence.jdbctemplate;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.apium.priceextractor.domain.BrandId;
+import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductId;
@@ -40,7 +40,7 @@ public class JdbcTemplatePriceRepository implements PriceRepository {
     Map<String, Object> params = new HashMap<>();
     params.put("productId", productId.id().toString());
     params.put("brandId", brandId.id().toString());
-    params.put("applicationDate", sdf.format(date.getTime()));
+    params.put("applicationDate", sdf.format(date.date().getTime()));
 
     return jdbcTemplate.query(sql, params, (resultSet, rowNum) -> priceAggExtractor.extractPriceAgg(resultSet)
     ).stream().findFirst().orElseThrow(() ->
