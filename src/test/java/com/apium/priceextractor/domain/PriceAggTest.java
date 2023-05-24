@@ -1,27 +1,16 @@
 package com.apium.priceextractor.domain;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import com.apium.priceextractor.domain.exception.InvalidPriceWithPriorityException;
-import com.apium.priceextractor.infrastructure.format.date.SimpleDateFormatConfig;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class PriceAggTest {
 
-  private SimpleDateFormat simpleDateFormat;
-
-  @BeforeEach
-  public void setup() {
-    simpleDateFormat = new SimpleDateFormatConfig().simpleDateFormat();
-  }
-
   @Test
-  public void givenValidData_thenShouldWork() throws ParseException {
+  public void givenValidData_thenShouldWork() {
     PriceId givenPriceId = new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"));
     BrandId givenBrandId = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
     Date givenStartDate = Date.fromString("2020-06-14-00.00.00");

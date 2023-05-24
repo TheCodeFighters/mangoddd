@@ -64,7 +64,7 @@ public class PriceServiceUnitTest {
   }
 
   @Test
-  public void givenValidRequest_thenValidPriceResponseDtoReturned() throws ParseException {
+  public void givenValidRequest_thenValidPriceResponseDtoReturned() {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
 
@@ -85,7 +85,7 @@ public class PriceServiceUnitTest {
   }
 
   @Test
-  @DisplayName("given a valid request with a product with ProductPriceDiscount then PriceAgg with discount is returned")
+  @DisplayName("given a valid request then PriceAgg is returned")
   public void test_1() {
 
     PriceAgg givenPriceAgg = cretePriceAgg();
@@ -96,7 +96,7 @@ public class PriceServiceUnitTest {
 
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
-    ProductDiscountAgg givenProductDiscountAgg = createPriceDiscount();
+    ProductDiscountAgg givenProductDiscountAgg = new ProductDiscountAgg(null, givenProductId, DiscountPercentage.fromDouble(0d));
 
     when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(givenProductDiscountAgg);
 
@@ -104,7 +104,7 @@ public class PriceServiceUnitTest {
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
 
-    givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(33.465, "EUR"));
+    givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(34.5, "EUR"));
 
     Assertions.assertEquals(givenPriceAgg.toDto(), priceResponseDto);
 

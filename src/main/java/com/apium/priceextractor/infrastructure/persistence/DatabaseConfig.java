@@ -36,15 +36,15 @@ public class DatabaseConfig {
 
   @Bean()
   @Primary
-  public PriceRepository jdbcTemplatePriceRepository(NamedParameterJdbcTemplate jdbcTemplate,
-      @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, PriceAggExtractor priceAggExtractor) {
+  public PriceRepository jdbcTemplatePriceRepository(NamedParameterJdbcTemplate jdbcTemplate, SimpleDateFormat sdf,
+      PriceAggExtractor priceAggExtractor) {
     return new JdbcTemplatePriceRepository(jdbcTemplate, sdf, priceAggExtractor);
   }
 
   @Bean()
   @Primary
-  public ProductDiscountRepository jdbcTemplateProductDiscountRepository(NamedParameterJdbcTemplate jdbcTemplate,
-      @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, ProductDiscountAggExtractor productDiscountAggExtractor) {
+  public ProductDiscountRepository jdbcTemplateProductDiscountRepository(NamedParameterJdbcTemplate jdbcTemplate, SimpleDateFormat sdf,
+      ProductDiscountAggExtractor productDiscountAggExtractor) {
     return new JdbcTemplateProductDiscountRepository(jdbcTemplate, sdf, productDiscountAggExtractor);
   }
 
