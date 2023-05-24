@@ -19,14 +19,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-import javax.money.Monetary;
 
 @Entity
 @Table(name = "prices")
 public class PriceEntity {
 
   @Id
-  @Column(name = "price_list", columnDefinition = "BINARY(16)")
+  @Column(name = "id", columnDefinition = "BINARY(16)")
   private UUID id;
 
   @Column(name = "brand_id", nullable = false, columnDefinition = "BINARY(16)")
@@ -59,9 +58,6 @@ public class PriceEntity {
   @NotNull
   private Currency curr;
 
-  @Column(name = "product_discount_id", nullable = false, columnDefinition = "BINARY(16)")
-  private UUID productDiscountId;
-
   public PriceAgg toPrice() {
     return new PriceAgg(
         new PriceId(id),
@@ -70,8 +66,7 @@ public class PriceEntity {
         endDate,
         new ProductId(productId),
         new Priority(priority),
-        PositiveMonetaryAmount.fromDoubleAndCurrency(price, curr.getCurrencyCode()),
-        new ProductDiscountId(productDiscountId)
+        PositiveMonetaryAmount.fromDoubleAndCurrency(price, curr.getCurrencyCode())
     );
   }
 

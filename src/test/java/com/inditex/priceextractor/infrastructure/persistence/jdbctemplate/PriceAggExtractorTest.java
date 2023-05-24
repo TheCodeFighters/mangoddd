@@ -73,7 +73,6 @@ class PriceAggExtractorTest {
     Assertions.assertEquals(expectedPriceAgg.getProductId(), actualPriceAgg.getProductId());
     Assertions.assertEquals(expectedPriceAgg.getPriority(), actualPriceAgg.getPriority());
     Assertions.assertEquals(expectedPriceAgg.getPositiveMonetaryAmount(), actualPriceAgg.getPositiveMonetaryAmount());
-    Assertions.assertEquals(expectedPriceAgg.getProductDiscountId(), actualPriceAgg.getProductDiscountId());
   }
 
   @Test
@@ -86,7 +85,7 @@ class PriceAggExtractorTest {
 
   private ResultSet createResultSetMock() throws SQLException, ParseException {
     ResultSet resultSet = mock(ResultSet.class);
-    when(resultSet.getString("price_list")).thenReturn(PRICE_ID.toString());
+    when(resultSet.getString("id")).thenReturn(PRICE_ID.toString());
     when(resultSet.getString("brand_id")).thenReturn(BRAND_ID.toString());
     when(resultSet.getTimestamp("start_date")).thenReturn(new Timestamp(simpleDateFormat.parse(START_DATE).getTime()));
     when(resultSet.getTimestamp("end_date")).thenReturn(new Timestamp(simpleDateFormat.parse(END_DATE).getTime()));
@@ -106,8 +105,7 @@ class PriceAggExtractorTest {
         simpleDateFormat.parse(END_DATE),
         new ProductId(PRODUCT_ID),
         new Priority(PRIORITY),
-        PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY),
-        new ProductDiscountId(PRODUCT_DISCOUNT_ID)
+        PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY)
     );
   }
 

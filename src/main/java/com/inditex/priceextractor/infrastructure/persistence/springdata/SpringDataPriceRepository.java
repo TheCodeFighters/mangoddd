@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.inditex.priceextractor.domain.BrandId;
 import com.inditex.priceextractor.domain.PriceAgg;
+import com.inditex.priceextractor.domain.PriceRepository;
 import com.inditex.priceextractor.domain.ProductId;
 import com.inditex.priceextractor.domain.exception.DomainEntityNotFoundException;
 import com.inditex.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataPriceEntityRepository;
@@ -11,8 +12,7 @@ import com.inditex.priceextractor.infrastructure.persistence.springdata.crudrepo
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-@Component
-public class SpringDataPriceRepository implements com.inditex.priceextractor.domain.PriceRepository {
+public class SpringDataPriceRepository implements PriceRepository {
 
   private final SpringDataPriceEntityRepository springDataPriceEntityRepository;
 
@@ -20,7 +20,7 @@ public class SpringDataPriceRepository implements com.inditex.priceextractor.dom
     this.springDataPriceEntityRepository = springDataPriceEntityRepository;
   }
 
-  public PriceAgg findOrfailRate(
+  public PriceAgg findOrFailRate(
       @NonNull ProductId productId,
       @NonNull BrandId brandId,
       @NonNull Date date

@@ -32,6 +32,8 @@ public class PriceAggControllerComponentTest {
 
   public static final ProductId GIVEN_PRODUCT_ID = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
 
+  public static final ProductId GIVEN_PRODUCT_WITH_DISCOUNT_ID = new ProductId(UUID.fromString("5d2102e9-6311-4c1b-a34d-326e7df8a235"));
+
   public static final BrandId GIVEN_BRAND_ID = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
 
   @Autowired
@@ -41,10 +43,7 @@ public class PriceAggControllerComponentTest {
   @MethodSource("provideGivenDataSet")
   public void givenValidRequest_whenGetCurrentPrice_thenStatus200AndValidResponse(String givenApplicationDateAsStr,
       ProductId givenProductId, BrandId givenBrandId, PriceId expectedPriceList, String expectedStartDateAsStr, String expectedEndDateAsStr,
-      double expectedPrice)
-      throws Exception {
-
-    String expectedProductId = GIVEN_PRODUCT_ID.id().toString();
+      double expectedPrice) throws Exception {
     String expectedBrandId = GIVEN_BRAND_ID.id().toString();
 
     mvc.perform(
@@ -59,7 +58,7 @@ public class PriceAggControllerComponentTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(MockMvcResultMatchers.jsonPath("$.price_list").value(expectedPriceList.toString()))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.product_id").value(expectedProductId))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.product_id").value(givenProductId.toString()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.brand_id").value(expectedBrandId))
         .andExpect(MockMvcResultMatchers.jsonPath("$.start_date").value(expectedStartDateAsStr))
         .andExpect(MockMvcResultMatchers.jsonPath("$.end_date").value(expectedEndDateAsStr))
@@ -71,24 +70,22 @@ public class PriceAggControllerComponentTest {
     return Stream.of(
         Arguments.of("2020-06-14-10.00.00", GIVEN_PRODUCT_ID,
             GIVEN_BRAND_ID, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")), "2020-06-14-00.00.00",
-            "2020-12-31-23.59.59",
-            35.50),
+            "2020-12-31-23.59.59", 35.50),
         Arguments.of("2020-06-14-16.00.00", GIVEN_PRODUCT_ID,
             GIVEN_BRAND_ID, new PriceId(UUID.fromString("2fe9b9de-1808-4b31-8dd2-34a98825003f")), "2020-06-14-15.00.00",
-            "2020-06-14-18.30.00",
-            25.45),
+            "2020-06-14-18.30.00", 25.45),
         Arguments.of("2020-06-14-21.00.00", GIVEN_PRODUCT_ID,
             GIVEN_BRAND_ID, new PriceId(UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b")), "2020-06-14-00.00.00",
-            "2020-12-31-23.59.59",
-            35.50),
+            "2020-12-31-23.59.59", 35.50),
         Arguments.of("2020-06-15-10.00.00", GIVEN_PRODUCT_ID,
             GIVEN_BRAND_ID, new PriceId(UUID.fromString("9c277bf4-6c6d-4932-aebb-47deb49e8263")), "2020-06-15-00.00.00",
-            "2020-06-15-11.00.00",
-            30.50),
+            "2020-06-15-11.00.00", 30.50),
         Arguments.of("2020-06-16-21.00.00", GIVEN_PRODUCT_ID,
             GIVEN_BRAND_ID, new PriceId(UUID.fromString("4d6b4f1e-3310-4b40-b803-88f9b6d2c668")), "2020-06-15-16.00.00",
-            "2020-12-31-23.59.59",
-            38.95)
+            "2020-12-31-23.59.59", 38.95),
+        Arguments.of("2023-01-16-21.00.00", GIVEN_PRODUCT_WITH_DISCOUNT_ID,
+            GIVEN_BRAND_ID, new PriceId(UUID.fromString("d4845579-5cc7-4505-867f-72a25c2e5acd")), "2023-01-01-16.00.00",
+            "2023-03-31-23.59.59", 242.5)
     );
   }
 

@@ -24,8 +24,6 @@ public class PriceAgg {
 
   private PositiveMonetaryAmount positiveMonetaryAmount;
 
-  private ProductDiscountId productDiscountId;
-
   public PriceAgg(
       @NonNull PriceId id,
       @NonNull BrandId brandId,
@@ -33,8 +31,7 @@ public class PriceAgg {
       @NonNull Date endDate,
       @NonNull ProductId productId,
       @NonNull Priority priority,
-      @NonNull PositiveMonetaryAmount positiveMonetaryAmount,
-      ProductDiscountId productDiscountId
+      @NonNull PositiveMonetaryAmount positiveMonetaryAmount
   ) {
     this.assertDateRangeIsValid(startDate, endDate);
     this.assertPriceGreaterThan2Digits(priority, positiveMonetaryAmount);
@@ -45,7 +42,6 @@ public class PriceAgg {
     this.productId = productId;
     this.priority = priority;
     this.positiveMonetaryAmount = positiveMonetaryAmount;
-    this.productDiscountId = productDiscountId;
   }
 
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
@@ -57,7 +53,7 @@ public class PriceAgg {
   private void assertPriceGreaterThan2Digits(Priority priority, PositiveMonetaryAmount positiveMonetaryAmount) {
     Long amount = positiveMonetaryAmount.value().getNumber().numberValue(Long.class);
     if (countDigits(amount) > 2 && priority.value() <= 10) {
-      throw new InvalidPriceWithPriorityException("DomainError: price is greater than 999.99 and priority is less than 10");
+      throw new InvalidPriceWithPriorityException("DomainError: price has more than 2 digits and priority is less than 10");
     }
   }
 
@@ -94,23 +90,6 @@ public class PriceAgg {
     return positiveMonetaryAmount;
   }
 
-  public ProductDiscountId getProductDiscountId() {
-    return productDiscountId;
-  }
-
-  public PriceAgg setPositiveMonetaryAmount(PositiveMonetaryAmount positiveMonetaryAmount) {
-    return new PriceAgg(
-        this.id,
-        this.brandId,
-        this.startDate,
-        this.endDate,
-        this.productId,
-        this.priority,
-        positiveMonetaryAmount,
-        null
-    );
-  }
-
   public PriceAgg setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
     if (productDiscountAgg.getProductId().equals(this.productId)) {
       return new PriceAgg(
@@ -120,11 +99,22 @@ public class PriceAgg {
           this.endDate,
           this.productId,
           this.priority,
-          this.getPositiveMonetaryAmount(),
-          productDiscountAgg.getId()
+          this.getPositiveMonetaryAmount()
       );
     }
     throw new PriceAggException("productDiscountAgg is not applicable to this priceAgg because productIds are different");
+  }
+
+  public PriceAgg changePrice(PositiveMonetaryAmount positiveMonetaryAmount) {
+    return new PriceAgg(
+        this.id,
+        this.brandId,
+        this.startDate,
+        this.endDate,
+        this.productId,
+        this.priority,
+        positiveMonetaryAmount
+    );
   }
 
   @Override
@@ -139,11 +129,11 @@ public class PriceAgg {
     return Objects.equals(id, priceAgg.id) && Objects.equals(brandId, priceAgg.brandId) && Objects.equals(
         startDate, priceAgg.startDate) && Objects.equals(endDate, priceAgg.endDate) && Objects.equals(productId,
         priceAgg.productId) && Objects.equals(priority, priceAgg.priority) && Objects.equals(positiveMonetaryAmount,
-        priceAgg.positiveMonetaryAmount) && Objects.equals(productDiscountId, priceAgg.productDiscountId);
+        priceAgg.positiveMonetaryAmount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount, productDiscountId);
+    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount);
   }
 }

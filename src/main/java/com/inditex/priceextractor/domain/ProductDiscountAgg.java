@@ -8,7 +8,7 @@ import org.javamoney.moneta.function.MonetaryOperators;
 
 public class ProductDiscountAgg {
 
-  public static final UUID BRAND_CHINA = UUID.fromString("c3f8e657-c76b-46f8-9c2c-fb14fa5113c8");
+  public static final UUID BRAND_CHINA = UUID.fromString("ed14fd0f-82be-4450-96f7-8fda7ecb0414");
 
   private final ProductDiscountId id;
 

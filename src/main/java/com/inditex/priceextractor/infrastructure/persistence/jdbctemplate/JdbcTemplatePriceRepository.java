@@ -28,17 +28,15 @@ public class JdbcTemplatePriceRepository implements PriceRepository {
     this.priceAggExtractor = priceAggExtractor;
   }
 
-  public PriceAgg findOrfailRate(
+  public PriceAgg findOrFailRate(
       @NonNull ProductId productId,
       @NonNull BrandId brandId,
       @NonNull Date date
   ) {
     String sql =
-        "SELECT BIN_TO_UUID(price_list) as price_list, BIN_TO_UUID(brand_id) as brand_id, curr, end_date, price, priority, BIN_TO_UUID"
-            + "(product_id) as product_id,BIN_TO_UUID(product_discount_id) as product_discount_id, start_date FROM prices WHERE "
-            + "product_id = UUID_TO_BIN"
-            + "(:productId) AND brand_id = UUID_TO_BIN(:brandId) AND :applicationDate BETWEEN start_date AND end_date ORDER BY priority "
-            + "DESC LIMIT 1";
+        "SELECT BIN_TO_UUID(id) as id, BIN_TO_UUID(brand_id) as brand_id, curr, end_date, price, priority, BIN_TO_UUID"
+            + "(product_id) as product_id,start_date FROM prices WHERE product_id = UUID_TO_BIN (:productId) AND brand_id = UUID_TO_BIN"
+            + "(:brandId) AND :applicationDate BETWEEN start_date AND end_date ORDER BY priority DESC LIMIT 1";
 
     Map<String, Object> params = new HashMap<>();
     params.put("productId", productId.id().toString());

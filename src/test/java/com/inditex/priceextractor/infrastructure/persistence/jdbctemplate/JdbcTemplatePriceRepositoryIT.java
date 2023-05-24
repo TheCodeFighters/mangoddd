@@ -1,7 +1,6 @@
 package com.inditex.priceextractor.infrastructure.persistence.jdbctemplate;
 
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,11 +13,9 @@ import com.inditex.priceextractor.domain.PositiveMonetaryAmount;
 import com.inditex.priceextractor.domain.PriceAgg;
 import com.inditex.priceextractor.domain.PriceId;
 import com.inditex.priceextractor.domain.Priority;
-import com.inditex.priceextractor.domain.ProductDiscountId;
 import com.inditex.priceextractor.domain.ProductId;
 import com.inditex.priceextractor.domain.exception.DomainEntityNotFoundException;
 
-import javax.money.Monetary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +61,7 @@ class JdbcTemplatePriceRepositoryIT {
     ProductId givenProductId = ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
     Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
-    PriceAgg actualPriceAgg = jdbcTemplatePriceRepository.findOrfailRate(givenProductId, givenBrandId, givenDate);
+    PriceAgg actualPriceAgg = jdbcTemplatePriceRepository.findOrFailRate(givenProductId, givenBrandId, givenDate);
     PriceAgg expectedPriceAgg = createPriceAgg();
     Assertions.assertEquals(expectedPriceAgg.getId(), actualPriceAgg.getId());
     Assertions.assertEquals(expectedPriceAgg.getBrandId(), actualPriceAgg.getBrandId());
@@ -73,7 +70,6 @@ class JdbcTemplatePriceRepositoryIT {
     Assertions.assertEquals(expectedPriceAgg.getProductId(), actualPriceAgg.getProductId());
     Assertions.assertEquals(expectedPriceAgg.getPriority(), actualPriceAgg.getPriority());
     Assertions.assertEquals(expectedPriceAgg.getPositiveMonetaryAmount(), actualPriceAgg.getPositiveMonetaryAmount());
-    Assertions.assertEquals(expectedPriceAgg.getProductDiscountId(), actualPriceAgg.getProductDiscountId());
   }
 
   @Test
@@ -83,7 +79,7 @@ class JdbcTemplatePriceRepositoryIT {
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
     Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
     assertThrows(DomainEntityNotFoundException.class,
-        () -> jdbcTemplatePriceRepository.findOrfailRate(givenNonExistentProductId, givenBrandId, givenDate));
+        () -> jdbcTemplatePriceRepository.findOrFailRate(givenNonExistentProductId, givenBrandId, givenDate));
   }
 
   private PriceAgg createPriceAgg() throws ParseException {
@@ -94,8 +90,7 @@ class JdbcTemplatePriceRepositoryIT {
         simpleDateFormat.parse(END_DATE),
         new ProductId(PRODUCT_ID),
         new Priority(PRIORITY),
-        PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY),
-        new ProductDiscountId(PRODUCT_DISCOUNT_ID)
+        PositiveMonetaryAmount.fromDoubleAndCurrency(PRICE, CURRENCY)
     );
   }
 
