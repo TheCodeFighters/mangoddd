@@ -36,7 +36,6 @@ public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate
     }
   }
 
-  //TODO extraemos esto a PositiveMonetaryAmount
   private void assertPriceGreaterThan2Digits(Priority priority, PositiveMonetaryAmount positiveMonetaryAmount) {
     Long amount = positiveMonetaryAmount.value().getNumber().numberValue(Long.class);
     if (countDigits(amount) > 2 && priority.value() <= 10) {
@@ -47,21 +46,6 @@ public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate
   private Integer countDigits(Long number) {
     String numberString = Long.toString(number);
     return numberString.length();
-  }
-
-  public PriceAgg setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
-    if (productDiscountAgg.productId().equals(this.productId)) {
-      return new PriceAgg(
-          this.id,
-          this.brandId,
-          this.startDate,
-          this.endDate,
-          this.productId,
-          this.priority,
-          this.positiveMonetaryAmount()
-      );
-    }
-    throw new PriceAggException("productDiscountAgg is not applicable to this priceAgg because productIds are different");
   }
 
   //TODO Double dispatch recibiremos el ProductDisctount

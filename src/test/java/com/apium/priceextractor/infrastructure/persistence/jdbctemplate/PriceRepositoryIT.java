@@ -2,8 +2,6 @@ package com.apium.priceextractor.infrastructure.persistence.jdbctemplate;
 
 import static org.junit.Assert.assertThrows;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import com.apium.priceextractor.PriceExtractorApplication;
@@ -48,19 +46,13 @@ class PriceRepositoryIT {
 
   public static final String CURRENCY = "EUR";
 
-  public static final UUID PRODUCT_DISCOUNT_ID = UUID.fromString("25830ea3-b572-48f6-9804-ad0acb17082c");
-
-  @Autowired
-  private SimpleDateFormat simpleDateFormat;
-
   @Autowired
   private PriceRepository priceRepository;
 
-  //TODO parametrized test para testear spring data y jdbc
   @Test
   @Transactional
   @DisplayName("getting a existent PriceAgg by its Id should return an PriceAgg")
-  public void test_0() throws ParseException {
+  public void test_0() {
     ProductId givenProductId = ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
     Date givenDate = Date.fromString("2020-06-14-10.00.00");
