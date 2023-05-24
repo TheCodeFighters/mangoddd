@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.apium.priceextractor.domain.BrandId;
+import com.apium.priceextractor.domain.DateRange;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceId;
@@ -31,8 +32,7 @@ public class PriceAggExtractor {
       return new PriceAgg(
           resultId,
           resultBrandId,
-          new com.apium.priceextractor.domain.Date(resultStartDate),
-          new com.apium.priceextractor.domain.Date(resultEndDate),
+          new DateRange(new com.apium.priceextractor.domain.Date(resultStartDate), new com.apium.priceextractor.domain.Date(resultEndDate)),
           resultProductId,
           new Priority(resultPriority),
           PositiveMonetaryAmount.fromDoubleAndCurrency(resultPrice, resultCurr)

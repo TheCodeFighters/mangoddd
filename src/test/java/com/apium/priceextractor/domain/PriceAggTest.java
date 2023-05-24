@@ -1,7 +1,5 @@
 package com.apium.priceextractor.domain;
 
-import static org.junit.Assert.assertThrows;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
@@ -28,6 +26,7 @@ public class PriceAggTest {
     BrandId givenBrandId = new BrandId(UUID.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"));
     Date givenStartDate = Date.fromString("2020-06-14-00.00.00");
     Date givenEndDate = Date.fromString("2020-12-31-23.59.59");
+    DateRange givenDateRange = new DateRange(givenStartDate, givenEndDate);
     ProductId givenProductId = new ProductId(UUID.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"));
     Priority givenPriority = new Priority(0);
     PositiveMonetaryAmount givenpositiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR");
@@ -35,8 +34,7 @@ public class PriceAggTest {
     PriceAgg priceAggregate = new PriceAgg(
         givenPriceId,
         givenBrandId,
-        givenStartDate,
-        givenEndDate,
+        givenDateRange,
         givenProductId,
         givenPriority,
         givenpositiveMonetaryAmount
@@ -44,28 +42,10 @@ public class PriceAggTest {
 
     Assertions.assertEquals(givenPriceId, priceAggregate.id());
     Assertions.assertEquals(givenBrandId, priceAggregate.brandId());
-    Assertions.assertEquals(givenStartDate, priceAggregate.startDate());
-    Assertions.assertEquals(givenEndDate, priceAggregate.endDate());
+    Assertions.assertEquals(givenDateRange, priceAggregate.dateRange());
     Assertions.assertEquals(givenProductId, priceAggregate.productId());
     Assertions.assertEquals(givenPriority, priceAggregate.priority());
     Assertions.assertEquals(givenpositiveMonetaryAmount, priceAggregate.positiveMonetaryAmount());
-  }
-
-  @Test
-  public void givenEndDateNewerThanStartDate_thenThrowRunTimeException() {
-
-    assertThrows(
-        RuntimeException.class,
-        () -> new PriceAgg(
-            PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
-            BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"),
-            Date.fromString("2020-06-14-00.00.00"),
-            Date.fromString("2020-06-13-00.00.00"),
-            ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
-            new Priority(0),
-            PositiveMonetaryAmount.fromDoubleAndCurrency(35.40, "EUR")
-        )
-    );
   }
 
   @Test
@@ -78,8 +58,7 @@ public class PriceAggTest {
         () -> new PriceAgg(
             PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
             BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8"),
-            Date.fromString("2020-06-14-00.00.00"),
-            Date.fromString("2020-12-31-23.59.59"),
+            new DateRange(Date.fromString("2020-06-14-00.00.00"), Date.fromString("2020-12-31-23.59.59")),
             ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067"),
             new Priority(10),
             PositiveMonetaryAmount.fromDoubleAndCurrency(150.40, "EUR")

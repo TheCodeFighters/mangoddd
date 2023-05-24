@@ -12,6 +12,7 @@ import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestD
 import com.apium.priceextractor.application.priceservice.PriceService;
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.Date;
+import com.apium.priceextractor.domain.DateRange;
 import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PositiveNumber;
@@ -127,8 +128,7 @@ public class PriceServiceUnitTest {
     return new PriceAgg(
         PriceId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
         BrandId.fromString(GIVEN_VALID_REQUEST.brandId()),
-        Date.fromString("2020-06-14-00.00.00"),
-        Date.fromString("2020-12-31-23.59.59"),
+        new DateRange(Date.fromString("2020-06-14-00.00.00"), Date.fromString("2020-12-31-23.59.59")),
         ProductId.fromString(GIVEN_VALID_REQUEST.productId()),
         new Priority(0),
         PositiveMonetaryAmount.fromDoubleAndCurrency(34.50, "EUR")
