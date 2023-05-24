@@ -1,7 +1,7 @@
 package com.apium.priceextractor.infrastructure.entrypoint.api.controller;
 
 import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
-import com.apium.priceextractor.application.priceservice.PriceDto;
+import com.apium.priceextractor.domain.PriceDto;
 import com.apium.priceextractor.application.priceservice.PriceService;
 import com.apium.priceextractor.domain.exception.DateFormatException;
 import com.apium.priceextractor.domain.exception.DomainException;
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PriceController {
 
-    private final PriceService priceService;
+  private final PriceService priceService;
 
-    public PriceController(PriceService $priceService) {
-        this.priceService = $priceService;
-    }
+  public PriceController(PriceService priceService) {
+    this.priceService = priceService;
+  }
 
-    @GetMapping("/price")
-    @ResponseBody
-    public ResponseEntity<PriceDto> getPrice(
-        @RequestParam("application_date") String applicationDate,
-        @RequestParam("product_id") String productId,
-        @RequestParam("brand_id") String brandId
-    ) {
+  @GetMapping("/price")
+  @ResponseBody
+  public ResponseEntity<PriceDto> getPrice(
+      @RequestParam("application_date") String applicationDate,
+      @RequestParam("product_id") String productId,
+      @RequestParam("brand_id") String brandId
+  ) {
 
         try {
             return ResponseEntity.ok()

@@ -26,10 +26,10 @@ public class JdbcTemplateProductDiscountRepository implements ProductDiscountRep
     this.productDiscountAggExtractor = productDiscountAggExtractor;
   }
 
-  public ProductDiscountAgg findOrFailByProductId(@NonNull ProductId productId) {
+  public ProductDiscountAgg findOrDefaultByProductId(@NonNull ProductId productId) {
     String sql =
-        "SELECT BIN_TO_UUID(id) as id, BIN_TO_UUID(product_id) as product_id, product_discount_percentage WHERE :product_id = UUID_TO_BIN"
-            + "(:productId)";
+        "SELECT BIN_TO_UUID(id) as id, BIN_TO_UUID(product_id) as product_id, discount_percentage FROM product_discounts WHERE product_id"
+            + " = UUID_TO_BIN(:productId)";
 
     Map<String, Object> params = new HashMap<>();
     params.put("productId", productId.id().toString());

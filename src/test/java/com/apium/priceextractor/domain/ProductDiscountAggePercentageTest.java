@@ -20,10 +20,10 @@ class ProductDiscountAggePercentageTest {
         ProductId.fromString(PRODUCT_ID),
         new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE))
     );
-    Assertions.assertEquals(ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID), actualProductDiscountAgg.getId());
-    Assertions.assertEquals(ProductId.fromString(PRODUCT_ID), actualProductDiscountAgg.getProductId());
+    Assertions.assertEquals(ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID), actualProductDiscountAgg.id());
+    Assertions.assertEquals(ProductId.fromString(PRODUCT_ID), actualProductDiscountAgg.productId());
     Assertions.assertEquals(new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE)),
-        actualProductDiscountAgg.getDiscountPercentage());
+        actualProductDiscountAgg.discountPercentage());
   }
 
   @Test

@@ -1,5 +1,6 @@
 package com.apium.priceextractor.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,22 +8,10 @@ import com.apium.priceextractor.domain.exception.InvalidPriceWithPriorityExcepti
 import com.apium.priceextractor.domain.exception.PriceAggException;
 import org.springframework.lang.NonNull;
 
-public class PriceAgg {
+public record PriceAgg(PriceId id, BrandId brandId, Date startDate, Date endDate, ProductId productId, Priority priority,
+                       PositiveMonetaryAmount positiveMonetaryAmount) {
 
-  private PriceId id;
-
-  private BrandId brandId;
-
-  private Date startDate;
-
-  private Date endDate;
-
-  private ProductId productId;
-
-  private Priority priority;
-
-  private PositiveMonetaryAmount positiveMonetaryAmount;
-
+  //TODO vamos a crear un assert en el enunciado que este directamente en el agreado
   public PriceAgg(
       @NonNull PriceId id,
       @NonNull BrandId brandId,
@@ -43,12 +32,14 @@ public class PriceAgg {
     this.positiveMonetaryAmount = positiveMonetaryAmount;
   }
 
+  //TODO extraemos esto a un DateRange
   private void assertDateRangeIsValid(Date startDate, Date endDate) {
     if (!startDate.before(endDate)) {
       throw new RuntimeException("DomainError: startDate can not bee newer than endDate");
     }
   }
 
+  //TODO extraemos esto a PositiveMonetaryAmount
   private void assertPriceGreaterThan2Digits(Priority priority, PositiveMonetaryAmount positiveMonetaryAmount) {
     Long amount = positiveMonetaryAmount.value().getNumber().numberValue(Long.class);
     if (countDigits(amount) > 2 && priority.value() <= 10) {
@@ -61,36 +52,8 @@ public class PriceAgg {
     return numberString.length();
   }
 
-  public PriceId getId() {
-    return id;
-  }
-
-  public BrandId getBrandId() {
-    return brandId;
-  }
-
-  public Date getStartDate() {
-    return startDate;
-  }
-
-  public Date getEndDate() {
-    return endDate;
-  }
-
-  public ProductId getProductId() {
-    return productId;
-  }
-
-  public Priority getPriority() {
-    return priority;
-  }
-
-  public PositiveMonetaryAmount getPositiveMonetaryAmount() {
-    return positiveMonetaryAmount;
-  }
-
   public PriceAgg setProductDiscountId(ProductDiscountAgg productDiscountAgg) {
-    if (productDiscountAgg.getProductId().equals(this.productId)) {
+    if (productDiscountAgg.productId().equals(this.productId)) {
       return new PriceAgg(
           this.id,
           this.brandId,
@@ -98,13 +61,14 @@ public class PriceAgg {
           this.endDate,
           this.productId,
           this.priority,
-          this.getPositiveMonetaryAmount()
+          this.positiveMonetaryAmount()
       );
     }
     throw new PriceAggException("productDiscountAgg is not applicable to this priceAgg because productIds are different");
   }
 
-  public PriceAgg changePrice(PositiveMonetaryAmount positiveMonetaryAmount) {
+  //TODO Double dispatch recibiremos el ProductDisctount
+  public PriceAgg applyDiscount(PositiveMonetaryAmount positiveMonetaryAmount) {
     return new PriceAgg(
         this.id,
         this.brandId,
@@ -116,23 +80,15 @@ public class PriceAgg {
     );
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    PriceAgg priceAgg = (PriceAgg) o;
-    return Objects.equals(id, priceAgg.id) && Objects.equals(brandId, priceAgg.brandId) && Objects.equals(
-        startDate, priceAgg.startDate) && Objects.equals(endDate, priceAgg.endDate) && Objects.equals(productId,
-        priceAgg.productId) && Objects.equals(priority, priceAgg.priority) && Objects.equals(positiveMonetaryAmount,
-        priceAgg.positiveMonetaryAmount);
+  public PriceDto toDto(SimpleDateFormat simpleDateFormat) {
+    return new PriceDto(
+        id.toString(),
+        productId.toString(),
+        brandId.toString(),
+        simpleDateFormat.format(startDate),
+        simpleDateFormat.format(endDate),
+        positiveMonetaryAmount.value().getNumber().doubleValue()
+    );
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, brandId, startDate, endDate, productId, priority, positiveMonetaryAmount);
-  }
 }

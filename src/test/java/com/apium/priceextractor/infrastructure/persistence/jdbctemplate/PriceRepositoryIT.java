@@ -12,9 +12,11 @@ import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceId;
+import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.Priority;
 import com.apium.priceextractor.domain.ProductId;
 import com.apium.priceextractor.domain.exception.DomainEntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
     classes = PriceExtractorApplication.class)
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class JdbcTemplatePriceRepositoryIT {
+class PriceRepositoryIT {
 
   public static final UUID PRICE_ID = UUID.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b");
 
@@ -52,33 +54,30 @@ class JdbcTemplatePriceRepositoryIT {
   private SimpleDateFormat simpleDateFormat;
 
   @Autowired
-  private JdbcTemplatePriceRepository jdbcTemplatePriceRepository;
+  private PriceRepository priceRepository;
 
+  //TODO parametrized test para testear spring data y jdbc
   @Test
+  @Transactional
   @DisplayName("getting a existent PriceAgg by its Id should return an PriceAgg")
   public void test_0() throws ParseException {
     ProductId givenProductId = ProductId.fromString("7f0e9fcb-e004-462b-a42e-1764cc4b3067");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
     Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
-    PriceAgg actualPriceAgg = jdbcTemplatePriceRepository.findOrFailRate(givenProductId, givenBrandId, givenDate);
+    PriceAgg actualPriceAgg = priceRepository.findOrFailRate(givenProductId, givenBrandId, givenDate);
     PriceAgg expectedPriceAgg = createPriceAgg();
-    Assertions.assertEquals(expectedPriceAgg.getId(), actualPriceAgg.getId());
-    Assertions.assertEquals(expectedPriceAgg.getBrandId(), actualPriceAgg.getBrandId());
-    Assertions.assertEquals(expectedPriceAgg.getStartDate(), actualPriceAgg.getStartDate());
-    Assertions.assertEquals(expectedPriceAgg.getEndDate(), actualPriceAgg.getEndDate());
-    Assertions.assertEquals(expectedPriceAgg.getProductId(), actualPriceAgg.getProductId());
-    Assertions.assertEquals(expectedPriceAgg.getPriority(), actualPriceAgg.getPriority());
-    Assertions.assertEquals(expectedPriceAgg.getPositiveMonetaryAmount(), actualPriceAgg.getPositiveMonetaryAmount());
+    Assertions.assertEquals(expectedPriceAgg, actualPriceAgg);
   }
 
   @Test
+  @Transactional
   @DisplayName("getting a non existent PriceAgg then should thrown DomainEntityNotFoundException")
   public void test_1() throws ParseException {
     ProductId givenNonExistentProductId = ProductId.fromString("11ff7f41-50a4-47f0-a27b-1987ce29bbf8");
     BrandId givenBrandId = BrandId.fromString("5ecffb3d-3472-4420-91cd-80ecd83981d8");
     Date givenDate = simpleDateFormat.parse("2020-06-14-10.00.00");
     assertThrows(DomainEntityNotFoundException.class,
-        () -> jdbcTemplatePriceRepository.findOrFailRate(givenNonExistentProductId, givenBrandId, givenDate));
+        () -> priceRepository.findOrFailRate(givenNonExistentProductId, givenBrandId, givenDate));
   }
 
   private PriceAgg createPriceAgg() throws ParseException {

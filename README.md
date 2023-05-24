@@ -39,48 +39,26 @@ en el directorio ci/api-doc/api-docs.yaml o accesible via http://localhost:8080/
 
 ---
 
-En la base de datos de comercio electrónico de la compañía disponemos de la tabla PRICES que refleja el precio final (pvp) y la tarifa que aplica a un producto de una cadena entre unas fechas determinadas. A continuación se muestra un ejemplo de la tabla con los campos relevantes:
+Kata de Arquitectura Hexagonal
+En nuestra aplicación disponemos de Productos, Precios y Descuentos.
 
-PRICES
--------
+El precio de un producto es válido durante un rango de fechas, en ese rango pueden existir diferentes precios para el mismo producto, pero
+será el que tenga la prioridad más alta el que usaremos.
+El rango de fechas debe ser válido, la fecha de inicio no puede ser mayor que la de final.
+Si la prioridad del precio en ese momento es igual o menor a 10, el amount debe tener más de 2 dígitos.
 
-BRAND_ID         START_DATE                                    END_DATE                        PRICE_LIST                   PRODUCT_ID  PRIORITY                 PRICE           CURR
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1         2020-06-14-00.00.00                        2020-12-31-23.59.59                        1                        35455                0                        35.50            EUR
-1         2020-06-14-15.00.00                        2020-06-14-18.30.00                        2                        35455                1                        25.45            EUR
-1         2020-06-15-00.00.00                        2020-06-15-11.00.00                        3                        35455                1                        30.50            EUR
-1         2020-06-15-16.00.00                        2020-12-31-23.59.59                        4                        35455                1                        38.95            EUR
+El descuento de productos es opcional, es posible que algunos productos no tengan descuentos a aplicar. El descuento nunca será mayor del
+50%.
 
-Campos:
+El caso de uso que vamos a implementar es la lectura del precio de un producto con un posible descuento aplicado.
 
-BRAND_ID: foreign key de la cadena del grupo (1 = ZARA).
-START_DATE , END_DATE: rango de fechas en el que aplica el precio tarifa indicado.
-PRICE_LIST: Identificador de la tarifa de precios aplicable.
-PRODUCT_ID: Identificador código de producto.
-PRIORITY: Desambiguador de aplicación de precios. Si dos tarifas coinciden en un rago de fechas se aplica la de mayor prioridad (mayor valor numérico).
-PRICE: precio final de venta.
-CURR: iso de la moneda.
+Input: Como entrada le pasaremos el producto del cual queremos el precio y el brand asociado al mismo.
 
-Se pide:
+Output: El resultado es el precio del producto para ese brand con el descuento aplicado (si es que lo hubiera).
 
-Construir una aplicación/servicio en SpringBoot que provea una end point rest de consulta  tal que:
+Notas
 
-Acepte como parámetros de entrada: fecha de aplicación, identificador de producto, identificador de cadena.
-Devuelva como datos de salida: identificador de producto, identificador de cadena, tarifa a aplicar, fechas de aplicación y precio final a aplicar.
+El proyecto en un momento determinado del tiempo necesita, alternativamente, de dos tipos de drivers de persistencia distintos: Spring Data
+o directamente Jdbc Template.
 
-Se debe utilizar una base de datos en memoria (tipo h2) e inicializar con los datos del ejemplo, (se pueden cambiar el nombre de los campos y añadir otros nuevos si se quiere, elegir el tipo de dato que se considere adecuado para los mismos).
-
-Desarrollar unos test al endpoint rest que  validen las siguientes peticiones al servicio con los datos del ejemplo:
-
--          Test 1: petición a las 10:00 del día 14 del producto 35455   para la brand 1 (ZARA)
--          Test 2: petición a las 16:00 del día 14 del producto 35455   para la brand 1 (ZARA)
--          Test 3: petición a las 21:00 del día 14 del producto 35455   para la brand 1 (ZARA)
--          Test 4: petición a las 10:00 del día 15 del producto 35455   para la brand 1 (ZARA)
--          Test 5: petición a las 21:00 del día 16 del producto 35455   para la brand 1 (ZARA)
-
-
-Se valorará:
-
-Diseño y construcción del servicio.
-Calidad de Código.
-Resultados correctos en los test.
+A pesar de ser un caso de uso de lectura, vamos a reutilizar (por conveniencia) el modelo de dominio usado en escritura.

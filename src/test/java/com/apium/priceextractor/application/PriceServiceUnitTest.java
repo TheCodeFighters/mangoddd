@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
-import com.apium.priceextractor.application.priceservice.PriceDto;
 import com.apium.priceextractor.application.priceservice.PriceService;
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
 import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.PriceAgg;
+import com.apium.priceextractor.domain.PriceDto;
 import com.apium.priceextractor.domain.PriceId;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.Priority;
@@ -79,15 +79,14 @@ public class PriceServiceUnitTest {
 
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
-    when(productDiscountRepositoryMock.findOrFailByProductId(givenProductId)).thenThrow(
+    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenThrow(
         new DomainEntityNotFoundException("ProductDiscount not found"));
 
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
 
-    Assertions.assertEquals(PriceDto.fromPrice(simpleDateFormat, givenPriceAgg), priceResponseDto);
-
+    Assertions.assertEquals(givenPriceAgg.toDto(simpleDateFormat), priceResponseDto);
   }
 
   @Test
@@ -104,15 +103,15 @@ public class PriceServiceUnitTest {
 
     ProductDiscountAgg givenProductDiscountAgg = createPriceDiscount();
 
-    when(productDiscountRepositoryMock.findOrFailByProductId(givenProductId)).thenReturn(givenProductDiscountAgg);
+    when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(givenProductDiscountAgg);
 
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
     verify(priceRepositoryMock, times(1)).findOrFailRate(givenProductId, givenBrandId, givenApplicationDate);
 
-    givenPriceAgg = givenPriceAgg.changePrice(PositiveMonetaryAmount.fromDoubleAndCurrency(33.465, "EUR"));
+    givenPriceAgg = givenPriceAgg.applyDiscount(PositiveMonetaryAmount.fromDoubleAndCurrency(33.465, "EUR"));
 
-    Assertions.assertEquals(PriceDto.fromPrice(simpleDateFormat, givenPriceAgg), priceResponseDto);
+    Assertions.assertEquals(givenPriceAgg.toDto(simpleDateFormat), priceResponseDto);
 
   }
 

@@ -15,7 +15,7 @@ public class SpringDataProductPriceRepository implements ProductDiscountReposito
   }
 
   @Override
-  public ProductDiscountAgg findOrFailByProductId(ProductId productId) {
+  public ProductDiscountAgg findOrDefaultByProductId(ProductId productId) {
     return springDataProductDiscountEntityRepository.findByProductId(productId.id()).map(ProductDiscountEntity::toProductDiscountAgg)
         .orElseThrow(() -> new DomainEntityNotFoundException("ProductDiscountAgg not found"));
   }

@@ -3,10 +3,10 @@ package com.apium.priceextractor.application.priceservice;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.PriceAgg;
+import com.apium.priceextractor.domain.PriceDto;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
@@ -35,22 +35,24 @@ public class PriceService {
   }
 
   public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) {
-    try {
-      Date applicationDate = simpleDateFormat.parse(request.applicationDate());
-      PriceAgg priceAgg = priceRepository.findOrFailRate(
-          new ProductId(UUID.fromString(request.productId())),
-          new BrandId(UUID.fromString(request.brandId())),
-          applicationDate
-      );
-
-      try {
-        ProductDiscountAgg productDiscountAgg = productDiscountRepository.findOrFailByProductId(priceAgg.getProductId());
-        priceAgg = priceAgg.changePrice(productDiscountAgg.applyDiscount(priceAgg.getPositiveMonetaryAmount(), priceAgg.getBrandId()));
-      } catch (DomainEntityNotFoundException ignored) {
-      }
-      return PriceDto.fromPrice(simpleDateFormat, priceAgg);
+    Date applicationDate;
+    try {//TODO igual que lo de abajo
+      applicationDate = simpleDateFormat.parse(request.applicationDate());
     } catch (ParseException e) {
       throw new DateFormatException("Date format is not valid");
     }
+    PriceAgg priceAgg = priceRepository.findOrFailRate(
+        ProductId.fromString(request.productId()),
+        BrandId.fromString(request.brandId()),
+        applicationDate
+    );
+
+    try {
+      ProductDiscountAgg productDiscountAgg = productDiscountRepository.findOrDefaultByProductId(priceAgg.productId());
+      priceAgg = priceAgg.applyDiscount(productDiscountAgg.applyDiscount(priceAgg.positiveMonetaryAmount(), priceAgg.brandId()));
+    } catch (DomainEntityNotFoundException ignored) {
+    }
+    return priceAgg.toDto(simpleDateFormat);
+
   }
 }

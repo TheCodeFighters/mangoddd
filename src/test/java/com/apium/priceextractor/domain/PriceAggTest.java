@@ -43,13 +43,13 @@ public class PriceAggTest {
         givenpositiveMonetaryAmount
     );
 
-    Assertions.assertEquals(givenPriceId, priceAggregate.getId());
-    Assertions.assertEquals(givenBrandId, priceAggregate.getBrandId());
-    Assertions.assertEquals(givenStartDate, priceAggregate.getStartDate());
-    Assertions.assertEquals(givenEndDate, priceAggregate.getEndDate());
-    Assertions.assertEquals(givenProductId, priceAggregate.getProductId());
-    Assertions.assertEquals(givenPriority, priceAggregate.getPriority());
-    Assertions.assertEquals(givenpositiveMonetaryAmount, priceAggregate.getPositiveMonetaryAmount());
+    Assertions.assertEquals(givenPriceId, priceAggregate.id());
+    Assertions.assertEquals(givenBrandId, priceAggregate.brandId());
+    Assertions.assertEquals(givenStartDate, priceAggregate.startDate());
+    Assertions.assertEquals(givenEndDate, priceAggregate.endDate());
+    Assertions.assertEquals(givenProductId, priceAggregate.productId());
+    Assertions.assertEquals(givenPriority, priceAggregate.priority());
+    Assertions.assertEquals(givenpositiveMonetaryAmount, priceAggregate.positiveMonetaryAmount());
   }
 
   @Test

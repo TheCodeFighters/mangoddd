@@ -19,7 +19,7 @@ public class ProductDiscountAggExtractor {
     try {
       ProductDiscountId resultId = new ProductDiscountId(UUID.fromString(resultSet.getString("id")));
       ProductId resultProductId = new ProductId(UUID.fromString(resultSet.getString("product_id")));
-      Double resultPrice = resultSet.getDouble("product_percentage");
+      Double resultPrice = resultSet.getDouble("discount_percentage");
 
       return new ProductDiscountAgg(
           resultId,
