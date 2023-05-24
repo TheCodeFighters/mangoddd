@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import com.apium.priceextractor.domain.DiscountPercentage;
-import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountId;
 import com.apium.priceextractor.domain.ProductId;
@@ -24,7 +23,7 @@ public class ProductDiscountAggExtractor {
       return new ProductDiscountAgg(
           resultId,
           resultProductId,
-          new DiscountPercentage(new PositiveNumber(resultPrice))
+          DiscountPercentage.fromDouble(resultPrice)
       );
     } catch (SQLException e) {
       throw new DomainEntityNotFoundException("result error");

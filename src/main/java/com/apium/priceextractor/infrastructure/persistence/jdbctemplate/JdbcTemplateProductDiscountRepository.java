@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.apium.priceextractor.domain.DiscountPercentage;
-import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
-import com.apium.priceextractor.domain.exception.DomainEntityNotFoundException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.lang.NonNull;
 
@@ -38,7 +36,7 @@ public class JdbcTemplateProductDiscountRepository implements ProductDiscountRep
 
     return jdbcTemplate.query(sql, params, (resultSet, rowNum) -> productDiscountAggExtractor.extractProductDiscountAgg(resultSet)
     ).stream().findFirst().orElse(
-        new ProductDiscountAgg(null, productId, new DiscountPercentage(new PositiveNumber(0d)))
+        new ProductDiscountAgg(null, productId, DiscountPercentage.fromDouble(0d))
     );
   }
 }

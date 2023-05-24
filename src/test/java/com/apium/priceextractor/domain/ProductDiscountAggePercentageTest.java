@@ -18,11 +18,11 @@ class ProductDiscountAggePercentageTest {
     ProductDiscountAgg actualProductDiscountAgg = new ProductDiscountAgg(
         ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID),
         ProductId.fromString(PRODUCT_ID),
-        new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE))
+        DiscountPercentage.fromDouble(DISCOUNT_PERCENTAGE)
     );
     Assertions.assertEquals(ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID), actualProductDiscountAgg.id());
     Assertions.assertEquals(ProductId.fromString(PRODUCT_ID), actualProductDiscountAgg.productId());
-    Assertions.assertEquals(new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE)),
+    Assertions.assertEquals(DiscountPercentage.fromDouble(DISCOUNT_PERCENTAGE),
         actualProductDiscountAgg.discountPercentage());
   }
 
@@ -32,7 +32,7 @@ class ProductDiscountAggePercentageTest {
     ProductDiscountAgg givenProductDiscountAgg = new ProductDiscountAgg(
         ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID),
         ProductId.fromString(PRODUCT_ID),
-        new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE))
+        DiscountPercentage.fromDouble(DISCOUNT_PERCENTAGE)
     );
 
     PositiveMonetaryAmount positiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(150d, "EUR");

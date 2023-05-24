@@ -15,7 +15,6 @@ import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.DateRange;
 import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.PositiveMonetaryAmount;
-import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceDto;
 import com.apium.priceextractor.domain.PriceId;
@@ -76,7 +75,7 @@ public class PriceServiceUnitTest {
     when(priceRepositoryMock.findOrFailRate(givenProductId, givenBrandId, givenApplicationDate)).thenReturn(givenPriceAgg);
 
     when(productDiscountRepositoryMock.findOrDefaultByProductId(givenProductId)).thenReturn(
-        new ProductDiscountAgg(null, givenProductId, new DiscountPercentage(new PositiveNumber(0d))));
+        new ProductDiscountAgg(null, givenProductId, DiscountPercentage.fromDouble(0d)));
 
     PriceDto priceResponseDto = priceService.getCurrentPrice(GIVEN_VALID_REQUEST);
 
@@ -139,7 +138,7 @@ public class PriceServiceUnitTest {
     return new ProductDiscountAgg(
         ProductDiscountId.fromString("d75f8fbb-f0f8-41b5-b109-17cf5498287b"),
         ProductId.fromString(GIVEN_VALID_REQUEST.productId()),
-        new DiscountPercentage(new PositiveNumber(3d))
+        DiscountPercentage.fromDouble(3d)
     );
   }
 

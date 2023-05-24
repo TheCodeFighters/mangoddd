@@ -3,7 +3,6 @@ package com.apium.priceextractor.infrastructure.persistence.springdata;
 import java.util.UUID;
 
 import com.apium.priceextractor.domain.DiscountPercentage;
-import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountId;
 import com.apium.priceextractor.domain.ProductId;
@@ -33,9 +32,7 @@ public class ProductDiscountEntity {
     return new ProductDiscountAgg(
         new ProductDiscountId(id),
         new ProductId(productId),
-        new DiscountPercentage(
-            new PositiveNumber(discountPercentage)
-        )
+        DiscountPercentage.fromDouble(discountPercentage)
     );
   }
 

@@ -2,7 +2,6 @@ package com.apium.priceextractor.infrastructure.persistence.jdbctemplate;
 
 import com.apium.priceextractor.PriceExtractorApplication;
 import com.apium.priceextractor.domain.DiscountPercentage;
-import com.apium.priceextractor.domain.PositiveNumber;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountId;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
@@ -26,7 +25,7 @@ class ProductDiscountRepositoryIT {
 
   public static final ProductId PRODUCT_ID = ProductId.fromString("5d2102e9-6311-4c1b-a34d-326e7df8a235");
 
-  public static final DiscountPercentage DISCOUNT_PERCENTAGE = new DiscountPercentage(new PositiveNumber(3d));
+  public static final DiscountPercentage DISCOUNT_PERCENTAGE = DiscountPercentage.fromDouble(3d);
 
   @Autowired
   private ProductDiscountRepository productDiscountRepository;
@@ -45,7 +44,7 @@ class ProductDiscountRepositoryIT {
     ProductId givenNonExistentProductId = ProductId.fromString("63db9838-69f6-4b5e-bad7-632603ad7aaf");
 
     ProductDiscountAgg expectedProductDiscountAgg =
-        new ProductDiscountAgg(null, givenNonExistentProductId, new DiscountPercentage(new PositiveNumber(0d)));
+        new ProductDiscountAgg(null, givenNonExistentProductId, DiscountPercentage.fromDouble(0d));
 
     ProductDiscountAgg actualProductDiscountAgg = productDiscountRepository.findOrDefaultByProductId(givenNonExistentProductId);
     Assertions.assertEquals(expectedProductDiscountAgg, actualProductDiscountAgg);

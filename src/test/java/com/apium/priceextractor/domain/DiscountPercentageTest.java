@@ -1,9 +1,9 @@
 package com.apium.priceextractor.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.apium.priceextractor.domain.exception.DiscountException;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +20,7 @@ class DiscountPercentageTest {
   @Test
   @DisplayName("when Discount is outside the range then sould throw DiscountException")
   public void test_1() {
-    PositiveNumber givenPercentage = new PositiveNumber(150d);
-    assertThrows(DiscountException.class, () -> new DiscountPercentage(givenPercentage));
+    assertThrows(DiscountException.class, () -> DiscountPercentage.fromDouble(150d));
   }
 
 }

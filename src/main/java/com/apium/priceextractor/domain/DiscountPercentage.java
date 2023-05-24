@@ -10,4 +10,8 @@ public record DiscountPercentage(PositiveNumber percentage) {
     }
   }
 
+  public static DiscountPercentage fromDouble(Double percentage) {
+    return new DiscountPercentage(new PositiveNumber(percentage));
+  }
+
 }
