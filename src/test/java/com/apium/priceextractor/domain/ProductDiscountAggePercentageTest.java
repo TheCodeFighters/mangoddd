@@ -36,35 +36,9 @@ class ProductDiscountAggePercentageTest {
     );
 
     PositiveMonetaryAmount positiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(150d, "EUR");
-    BrandId givenBrandIDWhichIsNotChina = BrandId.fromString("daa9023c-92b7-45fb-a033-dfd5e8193ec5");
 
-    PositiveMonetaryAmount actualPositiveMonetaryAmount = givenProductDiscountAgg.applyDiscount(
-        positiveMonetaryAmount,
-        givenBrandIDWhichIsNotChina
-    );
+    PositiveMonetaryAmount actualPositiveMonetaryAmount = givenProductDiscountAgg.applyDiscount(positiveMonetaryAmount);
     PositiveMonetaryAmount expectedPositiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(145.5d, "EUR");
-    Assertions.assertEquals(expectedPositiveMonetaryAmount, actualPositiveMonetaryAmount);
-  }
-
-  @Test
-  @DisplayName(
-      "when discount is applied over a PositiveMonetaryAmount for China Brand then should return PositiveMonetaryAmount with discounted "
-          + "not applied")
-  public void test_3() {
-    ProductDiscountAgg givenProductDiscountAgg = new ProductDiscountAgg(
-        ProductDiscountId.fromString(PRODUCT_DISCOUNT_ID),
-        ProductId.fromString(PRODUCT_ID),
-        new DiscountPercentage(new PositiveNumber(DISCOUNT_PERCENTAGE))
-    );
-
-    PositiveMonetaryAmount positiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(150d, "EUR");
-    BrandId givenBrandIDWhichIsNotChina = new BrandId(ProductDiscountAgg.BRAND_CHINA);
-
-    PositiveMonetaryAmount actualPositiveMonetaryAmount = givenProductDiscountAgg.applyDiscount(
-        positiveMonetaryAmount,
-        givenBrandIDWhichIsNotChina
-    );
-    PositiveMonetaryAmount expectedPositiveMonetaryAmount = PositiveMonetaryAmount.fromDoubleAndCurrency(150d, "EUR");
     Assertions.assertEquals(expectedPositiveMonetaryAmount, actualPositiveMonetaryAmount);
   }
 

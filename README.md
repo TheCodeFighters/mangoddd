@@ -1,26 +1,11 @@
 # Consideraciones que he seguido en el ejercicio:
 ##### Realizada con spring boot v 3.0.0, java target version 17
 
-- He tomado un par de consideraciones que pueden cambiar el behavior, en un código real nunca haría esto; siempre lo hubiera tratado
-antes de empezar a trabajar durante la Grooming, Planning o con el equipo el PO para no crear una feature
-con comportamiento no esperado.
-
-- En este caso he considerado que nunca habrá en la persistencia de Price dos Prices con la misma
-  priority para un productId y un brandId en un rango de fechas de startDate y endDate con overlapping.
-- Tampoco que nunca habrá en la persistencia aunque tuvieran dos currencies distintas dos con la misma
-  priority para un productId y un brandId en un rango de fechas de startDate y endDate con overlapping.
-  He considerado esto porque no se especifica currency como parámetro de entrada en la petición y he entendido del enunciado 
-  que una petición solo retornan un precio a aplicar.
-- He considerado que esta restricción estaría en el applicationService de createPrice o en el servicio encargado de crear prices.
-
 ## Tests:
 ### Como correr los Tests.
 ```shell
 ./gradlew test
 ```
-### Tests que he usado:
-- Hay 3 test: con el que he guiado el desarrollo, 2 unitario que cubren la entity Price y el PriceService y luego otro de tipo componentTest (integration) 
-para validar el controller de la API usando el juego de pruebas, el coverage es cercado al100 lo no cubierto es el codigo generado del equals y hashcode.
 
 ## Como ejecutar la aplicación:
 - inicializamos la aplicación, 

@@ -37,7 +37,7 @@ public class PriceService {
     );
 
     ProductDiscountAgg productDiscountAgg = productDiscountRepository.findOrDefaultByProductId(priceAgg.productId());
-    priceAgg = priceAgg.applyDiscount(productDiscountAgg.applyDiscount(priceAgg.positiveMonetaryAmount(), priceAgg.brandId()));
+    priceAgg = priceAgg.applyDiscount(productDiscountAgg.applyDiscount(priceAgg.positiveMonetaryAmount()));
 
     return priceAgg.toDto();
 
