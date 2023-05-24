@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: apiumdb
+      MYSQL_USER: apium
+      MYSQL_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - priceextractor-mysql:/var/lib/mysql
+
+volumes:
+  priceextractor-mysql:
