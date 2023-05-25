@@ -109,7 +109,7 @@ public class PriceAggControllerComponentTest {
   }
 
   @Test
-  public void givenRequestWithInvalidDateFormat_whenGetCurrentPrice_thenStatus403()
+  public void givenRequestWithInvalidDateFormat_whenGetCurrentPrice_thenStatus400()
       throws Exception {
 
     String givenApplicationDateAsStr = "cmt:2020-06-14-10.00.00";
