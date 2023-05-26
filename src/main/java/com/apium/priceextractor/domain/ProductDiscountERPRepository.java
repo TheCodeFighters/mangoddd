@@ -1,5 +1,8 @@
 package com.apium.priceextractor.domain;
 
+import java.util.Optional;
+
 public interface ProductDiscountERPRepository {
-  ProductDiscountAgg findAllOrFailByBrandId(BrandId brandId);
+
+  Optional<ProductDiscountAgg> findOrFailByProductIdOrBrandId(ProductId productId, BrandId brandId);
 }

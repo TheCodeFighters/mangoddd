@@ -7,6 +7,7 @@ import com.apium.priceextractor.domain.PriceAgg;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductId;
 import com.apium.priceextractor.domain.exception.DomainEntityNotFoundException;
+import com.apium.priceextractor.infrastructure.persistence.entity.PriceEntity;
 import com.apium.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataPriceEntityRepository;
 import org.springframework.lang.NonNull;
 

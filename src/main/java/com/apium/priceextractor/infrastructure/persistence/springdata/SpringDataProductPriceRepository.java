@@ -5,6 +5,7 @@ import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
 import com.apium.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataProductDiscountEntityRepository;
+import jakarta.validation.constraints.NotNull;
 
 public class SpringDataProductPriceRepository implements ProductDiscountRepository {
 
@@ -18,5 +19,10 @@ public class SpringDataProductPriceRepository implements ProductDiscountReposito
   public ProductDiscountAgg findOrDefaultByProductId(ProductId productId) {
     return springDataProductDiscountEntityRepository.findByProductId(productId.id()).map(ProductDiscountEntity::toProductDiscountAgg)
         .orElse(new ProductDiscountAgg(null, productId, DiscountPercentage.fromDouble(0d)));
+  }
+
+  @Override
+  public void save(@NotNull ProductDiscountAgg productDiscountAgg) {
+    //TODO not implemented yet
   }
 }

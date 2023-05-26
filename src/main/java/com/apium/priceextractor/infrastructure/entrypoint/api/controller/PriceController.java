@@ -1,8 +1,8 @@
 package com.apium.priceextractor.infrastructure.entrypoint.api.controller;
 
-import com.apium.priceextractor.application.priceservice.GetCurrentPriceRequestDto;
-import com.apium.priceextractor.domain.PriceDto;
-import com.apium.priceextractor.application.priceservice.PriceService;
+import com.apium.priceextractor.application.price.GetCurrentPriceRequestDto;
+import com.apium.priceextractor.domain.dpo.PriceDpo;
+import com.apium.priceextractor.application.price.PriceService;
 import com.apium.priceextractor.domain.exception.DateFormatException;
 import com.apium.priceextractor.domain.exception.DomainException;
 import org.springframework.http.HttpStatus;
@@ -23,17 +23,17 @@ public class PriceController {
 
   @GetMapping("/price")
   @ResponseBody
-  public ResponseEntity<PriceDto> getPrice(
+  public ResponseEntity<PriceDpo> getPrice(
       @RequestParam("application_date") String applicationDate,
       @RequestParam("product_id") String productId,
       @RequestParam("brand_id") String brandId
   ) {
 
-        try {
-            return ResponseEntity.ok()
-                .body(
-                    this.priceService.getCurrentPrice(
-                        new GetCurrentPriceRequestDto(applicationDate, productId, brandId)
+    try {
+      return ResponseEntity.ok()
+          .body(
+              this.priceService.getCurrentPrice(
+                  new GetCurrentPriceRequestDto(applicationDate, productId, brandId)
                     )
                 );
         } catch (DateFormatException e) {

@@ -2,6 +2,7 @@ package com.apium.priceextractor.domain;
 
 import java.text.SimpleDateFormat;
 
+import com.apium.priceextractor.domain.dpo.PriceDpo;
 import com.apium.priceextractor.domain.exception.InvalidPriceWithPriorityException;
 import org.springframework.lang.NonNull;
 
@@ -48,9 +49,9 @@ public record PriceAgg(PriceId id, BrandId brandId, DateRange dateRange, Product
     );
   }
 
-  public PriceDto toDto() {
+  public PriceDpo toDpo() {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
-    return new PriceDto(
+    return new PriceDpo(
         id.toString(),
         productId.toString(),
         brandId.toString(),

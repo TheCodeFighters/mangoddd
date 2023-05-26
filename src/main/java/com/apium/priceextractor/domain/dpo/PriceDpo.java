@@ -1,9 +1,9 @@
-package com.apium.priceextractor.domain;
+package com.apium.priceextractor.domain.dpo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
-public record PriceDto(
+public record PriceDpo(
     @JsonProperty("price_list") String priceId,
     @JsonProperty("product_id") String productId,
     @JsonProperty("brand_id") String brandId,
@@ -11,4 +11,5 @@ public record PriceDto(
     @NotNull @JsonProperty("end_date") String endDate,
     @JsonProperty("price") Double price
 ) {
+
 }

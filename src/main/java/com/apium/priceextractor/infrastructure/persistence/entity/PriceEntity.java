@@ -1,4 +1,4 @@
-package com.apium.priceextractor.infrastructure.persistence.springdata;
+package com.apium.priceextractor.infrastructure.persistence.entity;
 
 import java.util.Currency;
 import java.util.Date;

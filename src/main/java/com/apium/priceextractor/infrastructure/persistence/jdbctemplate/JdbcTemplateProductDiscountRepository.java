@@ -8,6 +8,7 @@ import com.apium.priceextractor.domain.DiscountPercentage;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.lang.NonNull;
 
@@ -38,5 +39,10 @@ public class JdbcTemplateProductDiscountRepository implements ProductDiscountRep
     ).stream().findFirst().orElse(
         new ProductDiscountAgg(null, productId, DiscountPercentage.fromDouble(0d))
     );
+  }
+
+  @Override
+  public void save(@NotNull ProductDiscountAgg productDiscountAgg) {
+    //TODO: implement
   }
 }

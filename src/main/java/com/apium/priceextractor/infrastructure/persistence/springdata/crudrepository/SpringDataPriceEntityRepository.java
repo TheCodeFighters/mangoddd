@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.apium.priceextractor.infrastructure.persistence.springdata.PriceEntity;
+import com.apium.priceextractor.infrastructure.persistence.entity.PriceEntity;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;

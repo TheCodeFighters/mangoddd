@@ -10,6 +10,10 @@ public record DiscountPercentage(PositiveNumber percentage) {
     }
   }
 
+  public Double toDouble() {
+    return percentage.value();
+  }
+
   public static DiscountPercentage fromDouble(Double percentage) {
     return new DiscountPercentage(new PositiveNumber(percentage));
   }

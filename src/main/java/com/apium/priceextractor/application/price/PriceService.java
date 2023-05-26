@@ -1,11 +1,9 @@
-package com.apium.priceextractor.application.priceservice;
-
-import java.text.SimpleDateFormat;
+package com.apium.priceextractor.application.price;
 
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.PriceAgg;
-import com.apium.priceextractor.domain.PriceDto;
+import com.apium.priceextractor.domain.dpo.PriceDpo;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
@@ -27,7 +25,7 @@ public class PriceService {
     this.productDiscountRepository = productDiscountRepository;
   }
 
-  public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) {
+  public PriceDpo getCurrentPrice(GetCurrentPriceRequestDto request) {
     Date applicationDate = Date.fromString(request.applicationDate());
 
     PriceAgg priceAgg = priceRepository.findOrFailRate(
@@ -39,7 +37,7 @@ public class PriceService {
     ProductDiscountAgg productDiscountAgg = productDiscountRepository.findOrDefaultByProductId(priceAgg.productId());
     priceAgg = priceAgg.applyDiscount(productDiscountAgg.applyDiscount(priceAgg.positiveMonetaryAmount()));
 
-    return priceAgg.toDto();
+    return priceAgg.toDpo();
 
   }
 }
