@@ -2,7 +2,7 @@ package com.apium.priceextractor.domain;
 
 import com.apium.priceextractor.domain.event.DomainEvent;
 
-public interface MessageRepository {
+public interface DomainEventPublisher {
 
-  void sendARMessageOrFail(DomainEvent event);
+  void send(DomainEvent event);
 }

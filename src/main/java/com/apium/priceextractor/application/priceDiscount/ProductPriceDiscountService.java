@@ -1,7 +1,7 @@
 package com.apium.priceextractor.application.priceDiscount;
 
 import com.apium.priceextractor.domain.BrandId;
-import com.apium.priceextractor.domain.MessageRepository;
+import com.apium.priceextractor.domain.DomainEventPublisher;
 import com.apium.priceextractor.domain.ProductDiscountERPRepository;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
@@ -15,13 +15,13 @@ public class ProductPriceDiscountService {
 
   private final ProductDiscountRepository productPriceDiscountRepository;
 
-  private final MessageRepository messageRepository;
+  private final DomainEventPublisher domainEventPublisher;
 
   public ProductPriceDiscountService(ProductDiscountERPRepository productDiscountERPRepository,
-      ProductDiscountRepository productPriceDiscountRepository, MessageRepository messageRepository) {
+      ProductDiscountRepository productPriceDiscountRepository, DomainEventPublisher domainEventPublisher) {
     this.productDiscountERPRepository = productDiscountERPRepository;
     this.productPriceDiscountRepository = productPriceDiscountRepository;
-    this.messageRepository = messageRepository;
+    this.domainEventPublisher = domainEventPublisher;
   }
 
   @Transactional
@@ -33,7 +33,7 @@ public class ProductPriceDiscountService {
     ).ifPresent(productDiscountAgg -> {
 
       productPriceDiscountRepository.save(productDiscountAgg);
-      messageRepository.sendARMessageOrFail(
+      domainEventPublisher.send(
           new ProductDiscountAggWasCreatedEvent(EventId.create(), productDiscountAgg.toDpo())
       );
 

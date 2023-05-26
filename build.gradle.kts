@@ -26,7 +26,9 @@ dependencies {
 	testImplementation("junit:junit:4.13.2")
 	runtimeOnly("mysql:mysql-connector-java")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.javamoney:moneta:1.4.2")
+	implementation("org.javamoney:moneta:1.4.2")
+	implementation("org.springframework.kafka:spring-kafka")
+	implementation("org.springframework.boot:spring-boot-starter-task")
 }
 
 tasks.withType<Test> {

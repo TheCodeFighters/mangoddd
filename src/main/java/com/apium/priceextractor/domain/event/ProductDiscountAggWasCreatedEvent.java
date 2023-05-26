@@ -7,6 +7,5 @@ public class ProductDiscountAggWasCreatedEvent extends DomainEvent {
   public ProductDiscountAggWasCreatedEvent(EventId id, ProductDiscountDpo productDiscountDpo) {
     super(id, productDiscountDpo);
   }
-
 }
 
