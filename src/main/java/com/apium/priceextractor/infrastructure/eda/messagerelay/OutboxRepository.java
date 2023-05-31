@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.apium.priceextractor.domain.DomainEventPublisher;
 import com.apium.priceextractor.domain.event.DomainEvent;
-import org.springframework.stereotype.Component;
 
 public interface OutboxRepository extends DomainEventPublisher {
 
