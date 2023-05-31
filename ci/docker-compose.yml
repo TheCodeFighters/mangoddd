@@ -1,5 +1,16 @@
 version: '3'
 services:
+  kafka-fast-data-dev:
+    image: lensesio/fast-data-dev:2.4.1
+    environment:
+      - LENSES_KAFKA_TOPIC_AUTO_CREATE=false
+      - LENSES_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - LENSES_SECURITY_MASTER_SECRET=password
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+      - "3030:3030"
+
   mysql:
     image: mysql:latest
     restart: always

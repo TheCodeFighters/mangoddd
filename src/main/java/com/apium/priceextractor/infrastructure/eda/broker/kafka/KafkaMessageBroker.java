@@ -1,23 +1,26 @@
 package com.apium.priceextractor.infrastructure.eda.broker.kafka;
 
+import java.util.List;
+
 import com.apium.priceextractor.domain.event.DomainEvent;
 import com.apium.priceextractor.infrastructure.eda.broker.MessageBroker;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaMessageBroker implements MessageBroker {
 
-  private final KafkaTemplate<String, DomainEvent> kafkaTemplate;
+  private final KafkaTemplate<String, String> kafkaTemplate;
 
-  private final String topicName;
-
-  public KafkaMessageBroker(KafkaTemplate<String, DomainEvent> kafkaTemplate, String topicName) {
+  public KafkaMessageBroker(KafkaTemplate<String, String> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
-    this.topicName = topicName;
+  }
+
+  public void sendMessageToBroker(DomainEvent event) {
+    kafkaTemplate.send(event.getTopicName().value(), event.getType());
   }
 
   @Override
-  public DomainEvent sendMessageToBroker(DomainEvent event) {
-    kafkaTemplate.send(topicName, event);
-    return event;
+  public List<DomainEvent> getEventsByTopic(String topic) {
+    //TODO no implemented yet
+    return null;
   }
 }

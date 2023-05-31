@@ -3,14 +3,14 @@ package com.apium.priceextractor.application.price;
 import com.apium.priceextractor.domain.BrandId;
 import com.apium.priceextractor.domain.Date;
 import com.apium.priceextractor.domain.PriceAgg;
-import com.apium.priceextractor.domain.dpo.PriceDpo;
 import com.apium.priceextractor.domain.PriceRepository;
 import com.apium.priceextractor.domain.ProductDiscountAgg;
 import com.apium.priceextractor.domain.ProductDiscountRepository;
 import com.apium.priceextractor.domain.ProductId;
-import org.springframework.stereotype.Service;
+import com.apium.priceextractor.domain.dto.PriceDto;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class PriceService {
 
   private final PriceRepository priceRepository;
@@ -25,7 +25,7 @@ public class PriceService {
     this.productDiscountRepository = productDiscountRepository;
   }
 
-  public PriceDpo getCurrentPrice(GetCurrentPriceRequestDto request) {
+  public PriceDto getCurrentPrice(GetCurrentPriceRequestDto request) {
     Date applicationDate = Date.fromString(request.applicationDate());
 
     PriceAgg priceAgg = priceRepository.findOrFailRate(
@@ -37,7 +37,6 @@ public class PriceService {
     ProductDiscountAgg productDiscountAgg = productDiscountRepository.findOrDefaultByProductId(priceAgg.productId());
     priceAgg = priceAgg.applyDiscount(productDiscountAgg.applyDiscount(priceAgg.positiveMonetaryAmount()));
 
-    return priceAgg.toDpo();
-
+    return priceAgg.toDto();
   }
 }

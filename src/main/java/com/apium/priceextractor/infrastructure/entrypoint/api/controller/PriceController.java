@@ -1,7 +1,7 @@
 package com.apium.priceextractor.infrastructure.entrypoint.api.controller;
 
 import com.apium.priceextractor.application.price.GetCurrentPriceRequestDto;
-import com.apium.priceextractor.domain.dpo.PriceDpo;
+import com.apium.priceextractor.domain.dto.PriceDto;
 import com.apium.priceextractor.application.price.PriceService;
 import com.apium.priceextractor.domain.exception.DateFormatException;
 import com.apium.priceextractor.domain.exception.DomainException;
@@ -23,7 +23,7 @@ public class PriceController {
 
   @GetMapping("/price")
   @ResponseBody
-  public ResponseEntity<PriceDpo> getPrice(
+  public ResponseEntity<PriceDto> getPrice(
       @RequestParam("application_date") String applicationDate,
       @RequestParam("product_id") String productId,
       @RequestParam("brand_id") String brandId

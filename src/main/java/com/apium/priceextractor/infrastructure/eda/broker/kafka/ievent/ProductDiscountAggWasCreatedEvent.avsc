@@ -1,0 +1,20 @@
+{
+  "type": "record",
+  "name": "ProductDiscountAggWasCreatedEvent",
+  "namespace": "com.apium.priceextractor.domain.v1",
+  "fields": [
+    {
+      "name": "productDiscountId",
+      "type": "string"
+    },
+    {
+      "name": "productId",
+      "type": "string"
+    },
+    {
+      "name": "discountPercentage",
+      "type": "double"
+    }
+  ],
+  "extends": "DomainEvent"
+}

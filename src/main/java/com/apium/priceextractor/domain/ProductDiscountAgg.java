@@ -1,6 +1,6 @@
 package com.apium.priceextractor.domain;
 
-import com.apium.priceextractor.domain.dpo.ProductDiscountDpo;
+import com.apium.priceextractor.domain.dto.ProductDiscountDto;
 import org.javamoney.moneta.function.MonetaryOperators;
 
 public record ProductDiscountAgg(ProductDiscountId id, ProductId productId, DiscountPercentage discountPercentage) {
@@ -22,8 +22,8 @@ public record ProductDiscountAgg(ProductDiscountId id, ProductId productId, Disc
     );
   }
 
-  public ProductDiscountDpo toDpo() {
-    return new ProductDiscountDpo(
+  public ProductDiscountDto toDto() {
+    return new ProductDiscountDto(
         id.toString(),
         productId.toString(),
         discountPercentage.toDouble()

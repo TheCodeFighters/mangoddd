@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "DomainEvent",
+  "namespace": "com.apium.priceextractor.domain.v1",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "occurredOn",
+      "type": "long"
+    },
+    {
+      "name": "topicName",
+      "type": "string"
+    }
+  ]
+}

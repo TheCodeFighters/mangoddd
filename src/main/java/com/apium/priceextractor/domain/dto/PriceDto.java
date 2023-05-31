@@ -1,9 +1,9 @@
-package com.apium.priceextractor.domain.dpo;
+package com.apium.priceextractor.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
-public record PriceDpo(
+public record PriceDto(
     @JsonProperty("price_list") String priceId,
     @JsonProperty("product_id") String productId,
     @JsonProperty("brand_id") String brandId,

@@ -17,4 +17,8 @@ public record Date(java.util.Date date) {
       }
     }
   }
+
+  public static Date Now() {
+    return new Date(new java.util.Date());
+  }
 }

@@ -1,8 +1,9 @@
 package com.apium.priceextractor.domain;
 
 import com.apium.priceextractor.domain.event.DomainEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface DomainEventPublisher {
 
-  void send(DomainEvent event);
+  void publish(DomainEvent event);
 }

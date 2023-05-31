@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.0.0"
 	id("io.spring.dependency-management") version "1.1.0"
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.7.1"
 }
 
 group = "com.apium"
@@ -25,12 +26,22 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 	testImplementation("junit:junit:4.13.2")
 	runtimeOnly("mysql:mysql-connector-java")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	implementation("org.javamoney:moneta:1.4.2")
-	implementation("org.springframework.kafka:spring-kafka")
-	implementation("org.springframework.boot:spring-boot-starter-task")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.javamoney:moneta:1.4.2")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.apache.avro:avro:1.11.0")
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+avro {
+    isCreateSetters.set(true)
+    stringType.set("String")
+}
+
+tasks.withType<com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask> {
+    setOutputDir(file("/home/oscarlopez1616/projects/personal/priceextractor/src/main/java/com/apium/priceextractor/infrastructure/eda/broker/kafka/IntegrationEvent/"))
+    setSource("/home/oscarlopez1616/projects/personal/priceextractor/src/main/java/com/apium/priceextractor/infrastructure/eda/broker/kafka/IntegrationEvent/")
 }

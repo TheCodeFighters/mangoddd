@@ -8,10 +8,7 @@ import com.apium.priceextractor.infrastructure.persistence.jdbctemplate.JdbcTemp
 import com.apium.priceextractor.infrastructure.persistence.jdbctemplate.JdbcTemplateProductDiscountRepository;
 import com.apium.priceextractor.infrastructure.persistence.jdbctemplate.PriceAggExtractor;
 import com.apium.priceextractor.infrastructure.persistence.jdbctemplate.ProductDiscountAggExtractor;
-import com.apium.priceextractor.infrastructure.persistence.springdata.SpringDataPriceRepository;
-import com.apium.priceextractor.infrastructure.persistence.springdata.SpringDataProductPriceRepository;
-import com.apium.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataPriceEntityRepository;
-import com.apium.priceextractor.infrastructure.persistence.springdata.crudrepository.SpringDataProductDiscountEntityRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,16 +20,16 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 @EnableJpaRepositories(basePackages = "com.apium.priceextractor.infrastructure.persistence.springdata.crudrepository")
 public class DatabaseConfig {
 
-  @Bean()
-  public PriceRepository springDataPriceRepository(SpringDataPriceEntityRepository springDataPriceEntityRepository) {
-    return new SpringDataPriceRepository(springDataPriceEntityRepository);
-  }
-
-  @Bean()
-  public ProductDiscountRepository springDataProductDiscountRepository(
-      SpringDataProductDiscountEntityRepository springDataPriceEntityRepository) {
-    return new SpringDataProductPriceRepository(springDataPriceEntityRepository);
-  }
+  //  @Bean()
+  //  public PriceRepository springDataPriceRepository(SpringDataPriceEntityRepository springDataPriceEntityRepository) {
+  //    return new SpringDataPriceRepository(springDataPriceEntityRepository);
+  //  }
+  //
+  //  @Bean()
+  //  public ProductDiscountRepository springDataProductDiscountRepository(
+  //      SpringDataProductDiscountEntityRepository springDataPriceEntityRepository) {
+  //    return new SpringDataProductPriceRepository(springDataPriceEntityRepository);
+  //  }
 
   @Bean()
   @Primary
@@ -46,6 +43,11 @@ public class DatabaseConfig {
   public ProductDiscountRepository jdbcTemplateProductDiscountRepository(NamedParameterJdbcTemplate jdbcTemplate,
       @Qualifier("SimpleDateFormatForDatabase") SimpleDateFormat sdf, ProductDiscountAggExtractor productDiscountAggExtractor) {
     return new JdbcTemplateProductDiscountRepository(jdbcTemplate, sdf, productDiscountAggExtractor);
+  }
+
+  @Bean()
+  public ObjectMapper createObjectMapper() {
+    return new ObjectMapper();
   }
 
 }

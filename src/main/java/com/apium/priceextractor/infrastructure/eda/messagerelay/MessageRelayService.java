@@ -1,6 +1,8 @@
-package com.apium.priceextractor.infrastructure.eda.meesagerelay;
+package com.apium.priceextractor.infrastructure.eda.messagerelay;
 
+import com.apium.priceextractor.domain.event.DomainEvent;
 import com.apium.priceextractor.infrastructure.eda.broker.MessageBroker;
+import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +20,13 @@ public class MessageRelayService {
 
   @Scheduled(fixedDelay = 30000)
   public void processMessages() {
-    outboxRepository.findAllMessages().stream()
-        .map(messageBroker::sendMessageToBroker)
-        .forEach(outboxRepository::updateMessageStatus);
+    outboxRepository.findAllMessages()
+        .forEach(this::processMessage);
+  }
+
+  @Transactional
+  public void processMessage(DomainEvent domainEvent) {
+    outboxRepository.updateMessageStatus(domainEvent);
+    messageBroker.sendMessageToBroker(domainEvent);
   }
 }
